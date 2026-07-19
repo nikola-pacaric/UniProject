@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local secrets (DB password, etc.) — keep on your machine only ###
+src/main/resources/application.properties
