@@ -32,7 +32,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthorResponse> create(@RequestBody AuthorRequest request) {
+    public ResponseEntity<AuthorResponse> create(@Valid @RequestBody AuthorRequest request) {
         AuthorResponse created = authorService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }

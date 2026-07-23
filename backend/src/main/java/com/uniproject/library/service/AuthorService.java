@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.uniproject.library.repository.AuthorRepository;
 import com.uniproject.library.dto.AuthorRequest;
 import com.uniproject.library.dto.AuthorResponse;
+import com.uniproject.library.exception.ResourceNotFoundException;
 import com.uniproject.library.model.Author;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class AuthorService {
     @Transactional(readOnly = true)
     public AuthorResponse findById(Long id) {
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Author not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + id));
         return toResponse(author);
     }
 
@@ -47,7 +48,7 @@ public class AuthorService {
 
     public AuthorResponse update(Long id, AuthorRequest request) {
         Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Author not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + id));
 
         author.setFirstName(request.getFirstName());
         author.setLastName(request.getLastName());
@@ -59,7 +60,7 @@ public class AuthorService {
 
     public void delete(Long id) {
         if (!authorRepository.existsById(id)) {
-            throw new RuntimeException("Author not found with id: " + id);
+            throw new ResourceNotFoundException("Author not found with id: " + id);
         }
         authorRepository.deleteById(id);
     }
