@@ -11,10 +11,11 @@ import com.uniproject.library.exception.ResourceNotFoundException;
 import com.uniproject.library.model.Book;
 import com.uniproject.library.repository.AuthorRepository;
 import com.uniproject.library.repository.CategoryRepository;
-
+import com.uniproject.library.repository.LoanRepository;
 import com.uniproject.library.dto.BookRequest;
 import com.uniproject.library.model.Author;
 import com.uniproject.library.model.Category;
+import com.uniproject.library.model.LoanStatus;
 
 @Service
 @Transactional
@@ -22,11 +23,13 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
+    private final LoanRepository loanRepository;
 
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository, CategoryRepository categoryRepository, LoanRepository loanRepository) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.categoryRepository = categoryRepository;
+        this.loanRepository = loanRepository;
     }
 
     @Transactional(readOnly = true)
@@ -42,6 +45,14 @@ public class BookService {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with id: " + id));
         return toResponse(book);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookResponse> search(String q) {
+        if (q == null || q.isBlank()) {
+            return findAll();
+        }
+        return bookRepository.search(q.trim()).stream().map(this::toResponse).toList();
     }
 
     public BookResponse create(BookRequest request) {
@@ -94,7 +105,9 @@ public class BookService {
         if (!bookRepository.existsById(id)) {
             throw new ResourceNotFoundException("Book not found with id: " + id);
         }
-        // Ovde bi trebalo blokirati brisanjee ako LOAN postoji za tu knjigu, ali trenutno samo brišemo knjigu
+        if (loanRepository.existsByBookIdAndStatus(id, LoanStatus.ACTIVE)) {
+            throw new BadRequestException("Cannot delete book with id " + id + " because it has active loans");
+        }
         bookRepository.deleteById(id);
     }
 

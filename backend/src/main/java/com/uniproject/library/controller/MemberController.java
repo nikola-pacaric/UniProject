@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.uniproject.library.service.LoanService;
 import com.uniproject.library.service.MemberService;
 import com.uniproject.library.dto.MemberResponse;
 import com.uniproject.library.dto.MemberRequest;
+import com.uniproject.library.dto.LoanResponse;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -23,9 +25,11 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final LoanService loanService;
 
-    public MemberController(MemberService memberService) {
+    public MemberController(MemberService memberService, LoanService loanService) {
         this.memberService = memberService;
+        this.loanService = loanService;
     }
 
     @GetMapping
@@ -36,6 +40,11 @@ public class MemberController {
     @GetMapping("/{id}")
     public MemberResponse getById(@PathVariable Long id) {
         return memberService.findById(id);
+    }
+
+    @GetMapping("/{id}/loans")
+    public List<LoanResponse> getLoans(@PathVariable Long id) {
+        return loanService.findByMemberId(id);
     }
 
     @PostMapping
@@ -53,5 +62,10 @@ public class MemberController {
     @PatchMapping("/{id}/deactivate")
     public MemberResponse deactivate(@PathVariable Long id) {
         return memberService.deactivate(id);
+    }
+
+    @PatchMapping("/{id}/activate")
+    public MemberResponse activate(@PathVariable Long id) {
+        return memberService.activate(id);
     }
 }

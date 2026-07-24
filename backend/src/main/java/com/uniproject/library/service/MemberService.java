@@ -74,6 +74,18 @@ public class MemberService {
         return toResponse(saved);
     }
 
+    public MemberResponse activate(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Member not found with id: " + id));
+
+        if (Boolean.TRUE.equals(member.getActive())) {
+            return toResponse(member);
+        }
+
+        member.setActive(true);
+        Member saved = memberRepository.save(member);
+        return toResponse(saved);
+    }
+
     private MemberResponse toResponse(Member member) {
         return new MemberResponse(
             member.getId(),

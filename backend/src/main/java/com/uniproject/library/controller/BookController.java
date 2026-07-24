@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.uniproject.library.service.BookService;
@@ -34,6 +35,11 @@ public class BookController {
     @GetMapping
     public List<BookResponse> getAll() {
         return bookService.findAll();
+    }
+
+    @GetMapping("/search")
+    public List<BookResponse> search(@RequestParam String q) {
+        return bookService.search(q);
     }
 
     @GetMapping("/{id}")
