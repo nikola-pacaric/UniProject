@@ -14,7 +14,6 @@ import java.util.List;
 
 import com.uniproject.library.dto.LoanRequest;
 import com.uniproject.library.dto.LoanResponse;
-import com.uniproject.library.service.LoanService;
 
 import jakarta.validation.Valid;
 
