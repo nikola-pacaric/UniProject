@@ -1,0 +1,49 @@
+<main class="auth-page">
+    <mat-card class="auth-card" appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>Bibliotecki sistem</mat-card-title>
+            <mat-card-subtitle>Prijavite se kao bibliotekar</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
+                <mat-form-field appearance="outline">
+                    <mat-label>Korisnicko ime</mat-label>
+                    <input matInput type="text" formControlName="username" autocomplete="username"/>
+
+                    @if (loginForm.controls.username.touched && loginForm.controls.username.hasError('required')) {
+                        <mat-error>Korisnicko ime je obavezno</mat-error>
+                    }   
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Lozinka</mat-label>
+                    <input matInput type="password" formControlName="password" autocomplete="current-password"/>
+
+                    @if (loginForm.controls.password.touched && loginForm.controls.password.hasError('required')) {
+                        <mat-error>Lozinka je obavezna.</mat-error>
+                    }
+                </mat-form-field>
+
+                @if (errorMessage(); as message) {
+                    <div class="server-error" role="alert">
+                        {{ message }}
+                    </div>
+                }
+
+                <button mat-flat-button type="submit" class="submit-button" [disabled]="isSubmitting()">
+                    @if (isSubmitting()) {
+                        Prijavljivanje...
+                    } @else {
+                        Prijavi se
+                    }
+                </button>
+            </form>
+        </mat-card-content>
+
+        <mat-card-actions class="auth-footer">
+            <span>Nemate nalog?</span>
+            <a mat-button routerLink="/register">Registrujte se</a>
+        </mat-card-actions>
+    </mat-card>
+</main>

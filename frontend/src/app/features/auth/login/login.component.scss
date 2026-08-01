@@ -1,0 +1,52 @@
+
+:host {
+    display: block;
+    min-height: 100dvh;
+}
+
+.auth-page {
+    box-sizing: border-box;
+    display: grid;
+    min-height: 100dvh;
+    place-items: center;
+    padding: 24px;
+
+    background:
+        radial-gradient(circle at top left, var(--mat-sys-primary-container), transparent 40%), 
+        var (--mat-sys-surface-container-low);
+}
+
+.auth-card {
+    width: min(100%, 420px);
+}
+
+mat-card-header {
+    margin-bottom: 24px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.server-error {
+    margin-bottom: 8px;
+    padding: 12px;
+
+    color: var(--mat-sys-on-error-container);
+    background: var(--mat-sys-error-container);
+    border-radius: 8px;
+}
+
+.submit-button {
+    min-height: 48px;
+    margin-top: 8px;
+}
+
+.auth-footer {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 16px 16px;
+}
