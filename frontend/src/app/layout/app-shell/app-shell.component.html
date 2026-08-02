@@ -1,1 +1,64 @@
-<p>app-shell works!</p>
+<mat-sidenav-container class="shell-container">
+    <mat-sidenav #sidenav class="shell-sidenav" mode="side" opened>
+        <div class="brand">
+            <mat-icon>local_library</mat-icon>
+            <span>Biblioteka</span>
+        </div>
+
+        <mat-nav-list>
+            <mat-list-item>
+                <mat-icon matListItemIcon>dashboard</mat-icon>
+                <span matListItemTitle>Pocetna</span>
+            </mat-list-item>
+
+            <mat-list-item disabled>
+                <mat-icon matListItemIcon>person</mat-icon>
+                <span matListItemTitle>Autori</span>
+            </mat-list-item>
+
+            <mat-list-item disabled>
+                <mat-icon matListItemIcon>category</mat-icon>
+                <span matListItemTitle>Kategorije</span>
+            </mat-list-item>
+
+            <mat-list-item disabled>
+                <mat-icon matListItemIcon>menu_book</mat-icon>
+                <span matListItemTitle>Knjige</span>
+            </mat-list-item>
+
+            <mat-list-item disabled>
+                <mat-icon matListItemIcon>groups</mat-icon>
+                <span matListItemTitle>Clanovi</span>
+            </mat-list-item>
+
+            <mat-list-item disabled>
+                <mat-icon matListItemIcon>assignment</mat-icon>
+                <span matListItemTitle>Zaduzenja</span>
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <mat-toolbar color="primary">
+            <button mat-icon-button type="button" aria-label="Otvori ili zatvori navigaciju" (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+
+            <span class="toolbar-title">Bibliotecki informacioni sistem</span>
+
+            <span class="toolbar-spacer"></span>
+
+            <button mat-button type="button" (click)="logout()">
+                <mat-icon>logout</mat-icon>
+                Odjavi se
+            </button>
+        </mat-toolbar>
+
+        <main class="shell-main">
+            <h1>Dobro dosli u bibliotecki sistem</h1>
+            <p>
+                Izaberite opciju iz navigacije, kada bude implemetirana.
+            </p>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>
