@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -16,6 +16,8 @@ import { AuthService } from '../../core/auth/auth.service';
     MatListModule,
     MatSidenavModule,
     MatToolbarModule,
+    RouterLink,
+    RouterOutlet,
   ],
   templateUrl: './app-shell.component.html',
   styleUrl: './app-shell.component.scss',

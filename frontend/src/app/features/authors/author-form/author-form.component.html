@@ -1,0 +1,56 @@
+<section class="page">
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>
+                {{ isEditMode ? 'Izmena autora' : 'Novi autor'}}
+            </mat-card-title>
+            <mat-card-subtitle>
+                Unesite podatke o autoru
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            @if (isLoading()) {
+                <p>Ucitavanje autora...</p>
+            } @else {
+                <form [formGroup]="authorForm" (ngSubmit)="submit()" novalidate>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Ime</mat-label>
+                        <input matInput formControlName="firstName"/>
+
+                        @if (authorForm.controls.firstName.touched && authorForm.controls.firstName.hasError('required')) {
+                            <mat-error>Ime je obavezno.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Prezime</mat-label>
+                        <input matInput formControlName="lastName" />
+
+                        @if (authorForm.controls.lastName.touched && authorForm.controls.lastName.hasError('required')) {
+                            <mat-error>Prezime je obavezno.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Biografija</mat-label>
+                        <textarea matInput rows="5" formControlName="biography"></textarea>
+                    </mat-form-field>
+
+                    @if (errorMessage(); as message) {
+                        <div class="server-error" role="alert">
+                            {{ message}}
+                        </div>
+                    }
+
+                    <div class="actions">
+                        <a mat-button routerLink="/authors">Otkazi</a>
+                        <button mat-flat-button type="submit" [disabled]="isSubmitting()">
+                            {{ isSubmitting() ? 'Cuvanje...' : 'Sacuvaj' }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </mat-card-content>
+    </mat-card>
+</section>

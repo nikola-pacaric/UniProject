@@ -1,0 +1,25 @@
+.page {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.server-error {
+    padding: 12px;
+    color: var(--mat-sys-on-error-container);
+    background: var(--mat-sys-error-container);
+    border-radius: 8px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 8px;
+}

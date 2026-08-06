@@ -1,0 +1,49 @@
+<section class="page">
+    <header class="page-header">
+        <div>
+            <h1>Autori</h1>
+            <p>Upravljanje autorima knjiga.</p>
+        </div>
+
+        <a mat-flat-button routerLink="/authors/new">
+            <mat-icon>add</mat-icon>
+            Dodaj autora
+        </a>
+    </header>
+
+    @if (errorMessage(); as message) {
+        <div class="server-error" role="alert">
+            {{ message }}
+        </div>
+    }
+
+    @if (authors$ | async; as authors) {
+        @if (authors.length === 0) {
+            <p>Nema registrovanih autora.</p>
+        } @else {
+            <mat-list>
+                @for (author of authors; track author.id) {
+                    <mat-list-item>
+                        <span matListItemTitle>
+                            {{ author.firstName }} {{ author.lastName }}
+                        </span>
+
+                        <span matListItemLine>
+                            {{ author.biography || 'Biografija nije unesena.'}}
+                        </span>
+
+                        <div matListItemMeta class="item-actions">
+                            <a mat-icon-button [routerLink]="['/authors', author.id, 'edit']" aria-label="Izmeni autora">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+
+                            <button mat-icon-button type="button" [disabled]="isDeleting() === author.id" (click)="deleteAuthor(author)" aria-label="Obrisi autora">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-list-item>
+                }
+            </mat-list>
+        }
+    }
+</section>

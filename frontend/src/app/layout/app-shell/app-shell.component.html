@@ -11,7 +11,7 @@
                 <span matListItemTitle>Pocetna</span>
             </mat-list-item>
 
-            <mat-list-item disabled>
+            <mat-list-item routerLink="/authors">
                 <mat-icon matListItemIcon>person</mat-icon>
                 <span matListItemTitle>Autori</span>
             </mat-list-item>
@@ -55,10 +55,7 @@
         </mat-toolbar>
 
         <main class="shell-main">
-            <h1>Dobro dosli u bibliotecki sistem</h1>
-            <p>
-                Izaberite opciju iz navigacije, kada bude implemetirana.
-            </p>
+            <router-outlet></router-outlet>
         </main>
     </mat-sidenav-content>
 </mat-sidenav-container>
