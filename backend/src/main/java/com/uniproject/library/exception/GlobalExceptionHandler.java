@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import com.uniproject.library.dto.ApiErrorResponse;
 
@@ -42,5 +43,15 @@ public class GlobalExceptionHandler {
         ApiErrorResponse body = new ApiErrorResponse(HttpStatus.BAD_REQUEST.value(), "Validation failed", fieldErrors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiErrorResponse> handleDataIntegrityViolation(DataIntegrityViolationException ex) {
+        ApiErrorResponse body = new ApiErrorResponse(
+            HttpStatus.CONFLICT.value(),
+            "Operation conflicts with existing data or related records."
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 }

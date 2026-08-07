@@ -9,6 +9,7 @@ import com.uniproject.library.dto.AuthorResponse;
 import com.uniproject.library.exception.ResourceNotFoundException;
 import com.uniproject.library.model.Author;
 import java.util.List;
+import com.uniproject.library.exception.BadRequestException;
 
 
 @Service
@@ -59,10 +60,13 @@ public class AuthorService {
     }
 
     public void delete(Long id) {
-        if (!authorRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Author not found with id: " + id);
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Author not found with id: " + id));
+
+        if (!author.getBooks().isEmpty()) {
+            throw new BadRequestException("Cannot delete author with associated books.");
         }
-        authorRepository.deleteById(id);
+        authorRepository.delete(author);
     }
 
     private AuthorResponse toResponse(Author author) {

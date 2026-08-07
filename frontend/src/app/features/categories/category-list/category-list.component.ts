@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
-import { Observable, catchError, of, EMPTY } from 'rxjs';
+import { Observable, catchError, EMPTY } from 'rxjs';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,11 +10,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ApiErrorResponse } from '../../../core/auth/auth.models';
-import { Author } from '../author.model';
-import { AuthorService } from '../author.service';
+import { Category } from '../category.model';
+import { CategoryService } from '../category.service';
 
 @Component({
-    selector: 'app-author-list',
+    selector: 'app-category-list',
     imports: [
         AsyncPipe, 
         MatListModule,
@@ -23,56 +23,59 @@ import { AuthorService } from '../author.service';
         MatSnackBarModule,
         RouterLink,
     ],
-    templateUrl: './author-list.component.html',
-    styleUrl: './author-list.component.scss',
+    templateUrl: './category-list.component.html',
+    styleUrl: './category-list.component.scss',
 })
-export class AuthorList implements OnInit {
-    private readonly authorService = inject(AuthorService);
+export class CategoryList implements OnInit {
+    private readonly categoryService = inject(CategoryService);
     private readonly snackBar = inject(MatSnackBar);
 
-    authors$!: Observable<Author[]>;
+    categories$!: Observable<Category[]>;
     readonly errorMessage = signal<string | null>(null);
     readonly isDeleting = signal<number | null>(null);
 
     ngOnInit(): void {
-        this.loadAuthors();
+        this.loadCategories();
     }
 
-    deleteAuthor(author: Author): void {
-        const confirmed = window.confirm(`Da li zelite da obrisete autora ${author.firstName} ${author.lastName}?`);
+    deleteCategory(category: Category): void {
+        const confirmed = window.confirm(`Da li zelite da obrisete kategoriju ${category.name}?`);
 
         if (!confirmed) {
             return;
         }
 
-        this.isDeleting.set(author.id);
+        this.isDeleting.set(category.id);
 
-        this.authorService.delete(author.id).subscribe({
+        this.categoryService.delete(category.id).subscribe({
             next: () => {
                 this.isDeleting.set(null);
-                this.snackBar.open('Autor je uspesno obrisan.', 'Zatvori', { duration: 3000 });
-                this.loadAuthors();
+                this.snackBar.open('Kategorija je uspesno obrisana.', 'Zatvori', { duration: 3000 });
+                this.loadCategories();
             },
             error: (error: HttpErrorResponse) => {
                 this.isDeleting.set(null);
 
                 const apiError = error.error as Partial<ApiErrorResponse> | null;
 
-                this.errorMessage.set(apiError?.message ?? 'Brisanje autora nije uspelo.');
+                this.errorMessage.set(apiError?.message ?? 'Brisanje kategorije nije uspelo.');
             }
         });
     }
 
-    private loadAuthors(): void {
+    private loadCategories(): void {
         this.errorMessage.set(null);
 
-        this.authors$ = this.authorService.getAll().pipe(
+        this.categories$ = this.categoryService.getAll().pipe(
             catchError((error: HttpErrorResponse) => {
+                const apiError = error.error as Partial<ApiErrorResponse> | null;
+
                 const message = error.status === 401 
                 ? 'Sesija nije validna. Odjavite se i prijavite ponovo.' 
                 : error.status === 0 
                 ? 'Backend nije dostupan ili CORS nije podesen.' 
-                : `Ucitavanje autora nije uspelo. Status: ${error.status}`;
+                : apiError?.message ?? 
+                `Ucitavanje kategorija nije uspelo. Status: ${error.status}`;
                 
                 this.errorMessage.set(message);
 

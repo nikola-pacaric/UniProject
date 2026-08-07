@@ -1,0 +1,49 @@
+<section class="page">
+    <header class="page-header">
+        <div>
+            <h1>Kategorije</h1>
+            <p>Upravljanje kategorijama knjiga.</p>
+        </div>
+
+        <a mat-flat-button routerLink="/categories/new">
+            <mat-icon>add</mat-icon>
+            Dodaj kategoriju
+        </a>
+    </header>
+
+    @if (errorMessage(); as message) {
+        <div class="server-error" role="alert">
+            {{ message }}
+        </div>
+    }
+
+    @if (categories$ | async; as categories) {
+        @if (categories.length === 0) {
+            <p>Nema registrovanih kategorija.</p>
+        } @else {
+            <mat-list>
+                @for (category of categories; track category.id) {
+                    <mat-list-item>
+                        <span matListItemTitle>
+                            {{ category.name }}
+                        </span>
+
+                        <span matListItemLine>
+                            {{ category.description || 'Opis nije unesen.'}}
+                        </span>
+
+                        <div matListItemMeta class="item-actions">
+                            <a mat-icon-button [routerLink]="['/categories', category.id, 'edit']" aria-label="Izmeni kategoriju">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+
+                            <button mat-icon-button type="button" [disabled]="isDeleting() === category.id" (click)="deleteCategory(category)" aria-label="Obrisi kategoriju">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-list-item>
+                }
+            </mat-list>
+        }
+    }
+</section>

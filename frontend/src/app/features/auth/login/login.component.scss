@@ -12,8 +12,9 @@
     padding: 24px;
 
     background:
-        radial-gradient(circle at top left, var(--mat-sys-primary-container), transparent 40%), 
-        var (--mat-sys-surface-container-low);
+        radial-gradient(circle at top left, 
+        var(--mat-sys-primary-container), transparent 40%), 
+        var(--mat-sys-surface-container-low);
 }
 
 .auth-card {

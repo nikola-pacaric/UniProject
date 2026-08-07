@@ -8,6 +8,7 @@ import com.uniproject.library.dto.CategoryRequest;
 import com.uniproject.library.dto.CategoryResponse;
 import com.uniproject.library.exception.ResourceNotFoundException;
 import com.uniproject.library.model.Category;
+import com.uniproject.library.exception.BadRequestException;
 import java.util.List;
 
 @Service
@@ -56,10 +57,12 @@ public class CategoryService {
     }
     
     public void delete(Long id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Category not found with id: " + id);
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+
+        if (!category.getBooks().isEmpty()) {
+            throw new BadRequestException("Cannot delete category with associated books.");
         }
-        categoryRepository.deleteById(id);
+        categoryRepository.delete(category);
     }
     
     private CategoryResponse toResponse(Category category) {

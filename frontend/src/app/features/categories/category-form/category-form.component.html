@@ -1,0 +1,54 @@
+<section class="page">
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>
+                {{ isEditMode ? 'Izmena kategorije' : 'Nova kategorija'}}
+            </mat-card-title>
+            <mat-card-subtitle>
+                Unesite podatke o kategoriji
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            @if (isLoading()) {
+                <p>Ucitavanje kategorije...</p>
+            } @else {
+                <form [formGroup]="categoryForm" (ngSubmit)="submit()" novalidate>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Naziv</mat-label>
+                        <input matInput formControlName="name"/>
+
+                        @if (categoryForm.controls.name.touched && categoryForm.controls.name.hasError('required')) {
+                            <mat-error>Naziv je obavezan.</mat-error>
+                        }
+                        @if (categoryForm.controls.name.touched && categoryForm.controls.name.hasError('maxlength')) {
+                            <mat-error>Naziv ne sme imati više od 100 karaktera.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Opis</mat-label>
+                        <textarea matInput rows="5" formControlName="description"></textarea>
+
+                        @if (categoryForm.controls.description.touched && categoryForm.controls.description.hasError('maxlength')) {
+                            <mat-error>Opis ne sme imati više od 5000 karaktera.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    @if (errorMessage(); as message) {
+                        <div class="server-error" role="alert">
+                            {{ message }}
+                        </div>
+                    }
+
+                    <div class="actions">
+                        <a mat-button routerLink="/categories">Otkazi</a>
+                        <button mat-flat-button type="submit" [disabled]="isSubmitting()">
+                            {{ isSubmitting() ? 'Cuvanje...' : 'Sacuvaj' }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </mat-card-content>
+    </mat-card>
+</section>

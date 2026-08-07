@@ -6,6 +6,8 @@ import { Register } from './features/auth/register/register.component';
 import { AppShell } from './layout/app-shell/app-shell.component';
 import { AuthorList } from './features/authors/author-list/author-list.component';
 import { AuthorForm } from './features/authors/author-form/author-form.component';
+import { CategoryList } from './features/categories/category-list/category-list.component';
+import { CategoryForm } from './features/categories/category-form/category-form.component';
 
 export const routes: Routes = [
     {
@@ -40,6 +42,23 @@ export const routes: Routes = [
                     {
                         path: ':id/edit',
                         component: AuthorForm,
+                    }
+                ]
+            },
+            {
+                path: 'categories',
+                children: [
+                    {
+                        path: '',
+                        component: CategoryList,
+                    },
+                    {
+                        path: 'new',
+                        component: CategoryForm,
+                    },
+                    {
+                        path: ':id/edit',
+                        component: CategoryForm,
                     }
                 ]
             }

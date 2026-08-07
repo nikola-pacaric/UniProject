@@ -9,11 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ApiErrorResponse } from '../../../core/auth/auth.models';
-import { AuthorRequest } from '../author.model';
-import { AuthorService } from '../author.service';
+import { CategoryRequest } from '../category.model';
+import { CategoryService } from '../category.service';
 
 @Component({
-    selector: 'app-author-form',
+    selector: 'app-category-form',
     imports: [
         ReactiveFormsModule,
         RouterLink,
@@ -23,12 +23,12 @@ import { AuthorService } from '../author.service';
         MatInputModule,
         MatSnackBarModule,
     ],
-    templateUrl: './author-form.component.html',
-    styleUrl: './author-form.component.scss',
-})
-export class AuthorForm implements OnInit {
+    templateUrl: './category-form.component.html',
+    styleUrl: './category-form.component.scss',
+})  
+export class CategoryForm implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
-    private readonly authorService = inject(AuthorService);
+    private readonly categoryService = inject(CategoryService);
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
     private readonly snackBar = inject(MatSnackBar);
@@ -37,85 +37,85 @@ export class AuthorForm implements OnInit {
     readonly isSubmitting = signal(false);
     readonly errorMessage = signal<string | null>(null);
 
-    readonly authorForm = this.formBuilder.nonNullable.group({
-        firstName: ['', [Validators.required, Validators.maxLength(100)]],
-        lastName: ['', [Validators.required, Validators.maxLength(100)]],
-        biography: ['', Validators.maxLength(5000)],
+    readonly categoryForm = this.formBuilder.nonNullable.group({
+        name: ['', [Validators.required, Validators.maxLength(100)]],
+        description: ['', Validators.maxLength(5000)],
     });
 
-    get authorId(): number | null {
+    get categoryId(): number | null {
         const value = this.route.snapshot.paramMap.get('id');
         return value ? Number(value) : null;
     }
 
     get isEditMode(): boolean {
-        return this.authorId !== null;
+        return this.categoryId !== null;
     }
 
     ngOnInit(): void {
-        if (this.authorId === null) {
+        if (this.categoryId === null) {
             return;
         }
 
         this.isLoading.set(true);
 
-        this.authorService.getById(this.authorId).subscribe({
-            next: (author) => {
-                this.authorForm.patchValue({
-                    firstName: author.firstName,
-                    lastName: author.lastName,
-                    biography: author.biography ?? '',
+        this.categoryService.getById(this.categoryId).subscribe({
+            next: (category) => {
+                this.categoryForm.patchValue({
+                    name: category.name,
+                    description: category.description ?? '',
                 });
                 this.isLoading.set(false);
             },
             error: () => {
-                this.errorMessage.set('Autor nije pronadjen.');
+                this.errorMessage.set('Ucitavanje kategorije nije uspelo.');
                 this.isLoading.set(false);
-            }
+            },
         });
     }
 
     submit(): void {
         this.normalizeFields();
 
-        if (this.authorForm.invalid) {
-            this.authorForm.markAllAsTouched();
+        if (this.categoryForm.invalid) {
+            this.categoryForm.markAllAsTouched();
             return;
         }
 
-        const values = this.authorForm.getRawValue();
+        const values = this.categoryForm.getRawValue();
 
-        const request: AuthorRequest = {
-            firstName: values.firstName,
-            lastName: values.lastName,
-            biography: values.biography || null,
+        const request: CategoryRequest = {
+            name: values.name.trim(),
+            description: values.description?.trim() || null,
         };
 
         this.isSubmitting.set(true);
         this.errorMessage.set(null);
 
-        const operation = this.authorId === null ? this.authorService.create(request) : this.authorService.update(this.authorId, request);
+        const operation = this.categoryId === null 
+            ? this.categoryService.create(request)
+            : this.categoryService.update(this.categoryId, request);
 
         operation.subscribe({
             next: () => {
-                this.snackBar.open(this.isEditMode ? 'Autor je uspesno izmenjen.' : 'Autor je uspesno kreiran.', 'Zatvori', { duration: 3000 },);
-            
-                void this.router.navigate(['/authors']);  
+                this.snackBar.open(this.isEditMode 
+                    ? 'Kategorija je uspesno izmenjena.' 
+                    : 'Kategorija je uspesno kreirana.', 'Zatvori', { duration: 3000, }
+                );
+                void this.router.navigate(['/categories']);
             },
             error: (error: HttpErrorResponse) => {
                 this.isSubmitting.set(false);
 
                 const apiError = error.error as Partial<ApiErrorResponse> | null;
-                this.errorMessage.set(apiError?.message ?? 'Doslo je do greske prilikom cuvanja autora.');
+                this.errorMessage.set(apiError?.message ?? 'Doslo je do greske prilikom cuvanja kategorije.');
             },
         });
     }
 
     private normalizeFields(): void {
-        this.authorForm.patchValue({
-            firstName: this.authorForm.controls.firstName.value.trim(),
-            lastName: this.authorForm.controls.lastName.value.trim(),
-            biography: this.authorForm.controls.biography.value.trim(),
+        this.categoryForm.patchValue({
+            name: this.categoryForm.controls.name.value.trim(),
+            description: this.categoryForm.controls.description.value.trim(),
         });
     }
-}
+} 
