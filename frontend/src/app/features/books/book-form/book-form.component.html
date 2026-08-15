@@ -1,0 +1,116 @@
+<section class="page">
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>
+                {{ isEditMode ? 'Izmena knjige' : 'Nova knjiga' }}
+            </mat-card-title>
+
+            <mat-card-subtitle>
+                Unesite podatke o knjizi
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            @if (isLoading()) {
+                <p class="loading-message">
+                    Ucitavanje podataka knjige...
+                </p>
+            } @else {
+                <form [formGroup]="bookForm" (ngSubmit)="submit()" novalidate>
+                    <div class="form-grid">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label>Naslov</mat-label>
+                            <input matInput formControlName="title" autocomplete="off"/>
+
+                            @if (bookForm.controls.title.touched && bookForm.controls.title.hasError('required')) {
+                                <mat-error>Naslov je obavezan.</mat-error>
+                            }
+                            @if (bookForm.controls.title.touched && bookForm.controls.title.hasError('maxlength')) {
+                                <mat-error>Naslov ne sme biti duzi od 255 karaktera.</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>ISBN</mat-label>
+                            <input matInput formControlName="isbn" autocomplete="off"/>
+
+                            @if (bookForm.controls.isbn.touched && bookForm.controls.isbn.hasError('required')) {
+                                <mat-error>ISBN je obavezan.</mat-error>
+                            }
+                            @if (bookForm.controls.isbn.touched && bookForm.controls.isbn.hasError('maxlength')) {
+                                <mat-error>ISBN ne sme biti duzi od 20 karaktera.</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Godina izdanja</mat-label>
+                            <input matInput type="number" formControlName="publicationYear"/>
+
+                            @if (bookForm.controls.publicationYear.touched && bookForm.controls.publicationYear.hasError('required')) {
+                                <mat-error>Godina izdanja je obavezna.</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Ukupan broj primeraka</mat-label>
+                            <input matInput type="number" min="0" formControlName="totalCopies"/>
+
+                            @if (bookForm.controls.totalCopies.touched && bookForm.controls.totalCopies.hasError('required')) {
+                                <mat-error>Ukupan broj primeraka je obavezan.</mat-error>
+                            }
+                            @if (bookForm.controls.totalCopies.touched && bookForm.controls.totalCopies.hasError('min')) {
+                                <mat-error>Ukupan broj primeraka ne moze biti negativan.</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Autor</mat-label>
+                            <mat-select formControlName="authorId">
+                                @for (author of authors(); track author.id) {
+                                    <mat-option [value]="author.id">
+                                        {{ author.firstName }}
+                                        {{ author.lastName }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+
+                            @if (bookForm.controls.authorId.touched && bookForm.controls.authorId.hasError('min')) {
+                                <mat-error>Izaberite autora.</mat-error>
+                            }
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Kategorija</mat-label>
+                            <mat-select formControlName="categoryId">
+                                @for (category of categories(); track category.id) {
+                                    <mat-option [value]="category.id">
+                                        {{ category.name }}
+                                    </mat-option>
+                                }
+                            </mat-select>
+
+                            @if (bookForm.controls.categoryId.touched && bookForm.controls.categoryId.hasError('min')) {
+                                <mat-error>Izaberite kategoriju.</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    @if (errorMessage(); as message) {
+                        <div class="server-error" role="alert">
+                            {{ message }}
+                        </div>
+                    }
+
+                    <div class="actions">
+                        <a mat-button routerLink="/books">
+                            Otkazi
+                        </a>
+                        <button mat-flat-button type="submit" [disabled]="isSubmitting()">
+                            {{ isSubmitting() ? 'Cuvanje...' : 'Sacuvaj' }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </mat-card-content>
+    </mat-card>
+</section>

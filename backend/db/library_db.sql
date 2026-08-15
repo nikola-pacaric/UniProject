@@ -67,7 +67,48 @@ CREATE TABLE IF NOT EXISTS loan (
     CONSTRAINT fk_loan_member FOREIGN KEY (member_id) REFERENCES member (id)
 );
 
+ALTER TABLE loan
+    ADD COLUMN book_title_at_loan VARCHAR(255) NULL AFTER book_id;
+
+UPDATE loan AS l
+JOIN book AS b ON b.id = l.book_id
+SET l.book_title_at_loan = b.title
+WHERE l.id > 0
+  AND l.book_title_at_loan IS NULL;
+  
+ALTER TABLE loan
+    MODIFY book_title_at_loan VARCHAR(255) NOT NULL;
+
+ALTER TABLE loan
+    DROP FOREIGN KEY fk_loan_book;
+
+ALTER TABLE loan
+    MODIFY book_id BIGINT NULL;
+    
+ALTER TABLE loan
+    ADD CONSTRAINT fk_loan_book
+    FOREIGN KEY (book_id) REFERENCES book(id)
+    ON DELETE SET NULL;
+    
+CREATE TABLE IF NOT EXISTS loan (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    book_id BIGINT NULL,
+    book_title_at_loan VARCHAR(255) NOT NULL,
+    member_id BIGINT NOT NULL,
+    loan_date DATE NOT NULL,
+    due_date DATE NOT NULL,
+    return_date DATE NULL,
+    status VARCHAR(20) NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_loan_book
+        FOREIGN KEY (book_id) REFERENCES book(id) ON DELETE SET NULL,
+    CONSTRAINT fk_loan_member
+        FOREIGN KEY (member_id) REFERENCES member(id)
+);
+
 INSERT INTO author (first_name, last_name, biography)
 	VALUES ('Ivo', 'Andric', NULL);
 INSERT INTO category (name, description)
 	VALUES ('Roman', 'Proza duze forme.');
+    
+SELECT * FROM loan;

@@ -7,6 +7,7 @@ public class LoanResponse {
 
     private Long id;
     private Long bookId;
+    private String bookTitleAtLoan;
     private Long memberId;
     private LocalDate loanDate;
     private LocalDate dueDate;
@@ -15,10 +16,11 @@ public class LoanResponse {
 
     public LoanResponse() {super();}
 
-    public LoanResponse(Long id, Long bookId, Long memberId, LocalDate loanDate, LocalDate dueDate,
+    public LoanResponse(Long id, Long bookId, String bookTitleAtLoan, Long memberId, LocalDate loanDate, LocalDate dueDate,
             LocalDate returnDate, LoanStatus status) {
         this.id = id;
         this.bookId = bookId;
+        this.bookTitleAtLoan = bookTitleAtLoan;
         this.memberId = memberId;
         this.loanDate = loanDate;
         this.dueDate = dueDate;
@@ -40,6 +42,14 @@ public class LoanResponse {
 
     public void setBookId(Long bookId) {
         this.bookId = bookId;
+    }
+
+    public String getBookTitleAtLoan() {
+        return bookTitleAtLoan;
+    }
+
+    public void setBookTitleAtLoan(String bookTitleAtLoan) {
+        this.bookTitleAtLoan = bookTitleAtLoan;
     }
 
     public Long getMemberId() {

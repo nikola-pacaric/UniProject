@@ -1,0 +1,66 @@
+<section class="page">
+    <header class="page-header">
+        <div>
+            <h1>Clanovi</h1>
+            <p>Upravljanje clanovima biblioteke</p>
+        </div>
+
+        <a mat-flat-button routerLink="/members/new">
+            <mat-icon>add</mat-icon>
+            Dodaj clana
+        </a>
+    </header>
+
+    @if (errorMessage(); as message) {
+        <div class="server-error" role="alert">
+            {{ message }}
+        </div>
+    }
+
+    @if (members$ | async; as members) {
+        @if (members.length === 0) {
+            <p>Nema registrovanih clanova.</p>
+        } @else {
+            <mat-list>
+                @for (member of members; track member.id) {
+                    <mat-list-item>
+                        <span matListItemTitle>
+                            {{ member.firstName }} {{ member.lastName }}
+                        </span>
+
+                        <span matListItemLine>
+                            Clanska karta: {{ member.membershipCardNumber}}
+                        </span>
+
+                        <span matListItemLine>
+                            Email: {{ member.email}}
+                            . Telefon: {{ member.phone || 'Nije unet' }}
+                        </span>
+
+                        <span matListItemLine class="status" [class.active]="member.active" [class.inactive]="!member.active">
+                            Status: {{ member.active ? 'Aktivan' : 'Neaktivan' }}
+                        </span>
+
+                        <div matListItemMeta class="item-actions">
+                            <a mat-icon-button [routerLink]="['/members', member.id, 'loans']" aria-label="Istorija zaduzenja">
+                                <mat-icon>history</mat-icon>
+                            </a>
+
+                            <a mat-icon-button [routerLink]="['/members', member.id, 'edit']" aria-label="Izmeni clana">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+
+                            <button mat-icon-button type="button" [disabled]="isChangingStatus() === member.id" (click)="toggleStatus(member)" [attr.aria-label]="member.active 
+                                ? 'Deaktiviraj clana'
+                                : 'Aktiviraj clana'">
+                                <mat-icon>
+                                    {{ member.active ? 'person_off' : 'person_add' }}
+                                </mat-icon>
+                            </button>
+                        </div>
+                    </mat-list-item>
+                }
+            </mat-list>
+        }
+    }
+</section>

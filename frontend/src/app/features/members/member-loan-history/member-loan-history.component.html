@@ -1,0 +1,59 @@
+<section class="page">
+    <header class="page-header">
+        <div>
+            @if (member(); as currentMember) {
+                <h1>Istorija zaduzeja</h1>
+                <p>
+                    {{ currentMember.firstName }}
+                    {{ currentMember.lastName }}
+                    . Clanska karta: 
+                    {{ currentMember.membershipCardNumber }}
+                </p>
+            } @else {
+                <h1>Istorija zaduzenja</h1>
+            }
+        </div>
+
+        <a mat-button routerLink="/members">
+            Nazad na clanove
+        </a>
+    </header>
+
+    @if (isLoading()) {
+        <p>Ucitavanje istorije zaduzenja...</p>
+    } @else {
+        @if (errorMessage(); as message) {
+            <div class="server-error" role="alert">
+                {{ message }}
+            </div>
+        }
+
+        @if (loans().length === 0) {
+            <p>Clan nema zaduzenja.</p>
+        } @else {
+            <mat-list>
+                @for (loan of loans(); track loan.id) {
+                    <mat-list-item>
+                        <span matListItemTitle>
+                            {{ loan.bookTitleAtLoan }}
+                        </span>
+
+                        <span matListItemLine>
+                            Zaduzeno:
+                            {{ formatDate(loan.loanDate) }}
+                            . Rok:
+                            {{ formatDate(loan.dueDate) }}
+                        </span>
+
+                        <span matListItemLine>
+                            Vraceno:
+                            {{ formatDate(loan.returnDate) }}
+                            Status:
+                            {{ getStatusLabel(loan) }}
+                        </span>
+                    </mat-list-item>
+                }
+            </mat-list>
+        }
+    }
+</section>

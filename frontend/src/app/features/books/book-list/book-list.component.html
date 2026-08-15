@@ -1,0 +1,69 @@
+<section class="page">
+    <header class="page-header">
+        <div>
+            <h1>Knjige</h1>
+            <p>Upravljanje knjigama u biblioteci</p>
+        </div>
+
+        <a mat-flat-button routerLink="/books/new">
+            <mat-icon>add</mat-icon>
+            Dodaj knjigu
+        </a>
+    </header>
+
+    <form class="search-form" [formGroup]="searchForm" (ngSubmit)="search()">
+        <mat-form-field appearance="outline">
+            <mat-label>Pretraga knjiga</mat-label>
+            <input matInput formControlName="query" 
+                placeholder="Naslov, autor, kategorija ili ISBN"/>
+        </mat-form-field>
+
+        <button mat-flat-button type="submit">Pretrazi</button>
+
+        <button mat-button type="button"
+            (click)="clearSearch()" [disabled]="!searchQuery()">Ocisti</button>
+    </form>
+
+    @if (errorMessage(); as message) {
+        <div class="server-error" role="alert">
+            {{ message }}
+        </div>
+    }
+
+    @if (books$ | async; as books) {
+        @if (books.length === 0) {
+            <p>Nema pronadjenih knjiga.</p>
+        } @else {
+            <mat-list>
+                @for (book of books; track book.id) {
+                    <mat-list-item>
+                        <span matListItemTitle>{{ book.title }}</span>
+                        <span matListItemLine> Autor:{{ book.authorName }}</span>
+                        <span matListItemLine> 
+                            Kategorija: {{ book.categoryName }}
+                            . ISBN: {{ book.isbn }}
+                            . Dostupno: {{ book.availableCopies }}/{{ book.totalCopies }}
+                        </span>
+
+                        <div matListItemMeta class="item-actions">
+                            <a mat-icon-button
+                                [routerLink]="['/books', book.id, 'edit']"
+                                aria-label="Izmeni knjigu">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+
+                            <button 
+                                mat-icon-button
+                                type="button"
+                                [disabled]="isDeleting() === book.id"
+                                (click)="deleteBook(book)"
+                                aria-label="Obrisi knjigu">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </div>
+                    </mat-list-item>
+                }
+            </mat-list>
+        }
+    }
+</section>

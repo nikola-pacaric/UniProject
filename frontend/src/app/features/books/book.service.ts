@@ -15,4 +15,26 @@ export class BookService {
     getAll(): Observable<Book[]> {
         return this.http.get<Book[]>(this.booksUrl);
     }
+
+    getById(id: number): Observable<Book> {
+        return this.http.get<Book>(`${this.booksUrl}/${id}`);
+    }
+
+    search(query: string): Observable<Book[]> {
+        return this.http.get<Book[]>(`${this.booksUrl}/search`, {
+            params: { q: query.trim() },
+        });
+    }
+
+    create(bookRequest: BookRequest): Observable<Book> {
+        return this.http.post<Book>(this.booksUrl, bookRequest);
+    }
+
+    update(id: number, bookRequest: BookRequest): Observable<Book> {
+        return this.http.put<Book>(`${this.booksUrl}/${id}`, bookRequest);
+    }
+
+    delete(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.booksUrl}/${id}`);
+    }
 }

@@ -22,9 +22,12 @@ public class Loan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "book_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "book_id", nullable = true)
     private Book book;
+
+    @Column(name = "book_title_at_loan", nullable = false, length = 255)
+    private String bookTitleAtLoan;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "member_id", nullable = false)
@@ -45,10 +48,11 @@ public class Loan {
 
     public Loan() {super();}
 
-    public Loan(Book book, Member member, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate,
+    public Loan(Book book, String bookTitleAtLoan, Member member, LocalDate loanDate, LocalDate dueDate, LocalDate returnDate,
             LoanStatus status) {
         super();
         this.book = book;
+        this.bookTitleAtLoan = bookTitleAtLoan;
         this.member = member;
         this.loanDate = loanDate;
         this.dueDate = dueDate;
@@ -70,6 +74,14 @@ public class Loan {
 
     public void setBook(Book book) {
         this.book = book;
+    }
+
+    public String getBookTitleAtLoan() {
+        return bookTitleAtLoan;
+    }
+
+    public void setBookTitleAtLoan(String bookTitleAtLoan) {
+        this.bookTitleAtLoan = bookTitleAtLoan;
     }
 
     public Member getMember() {

@@ -74,6 +74,7 @@ public class LoanService {
 
         Loan loan = new Loan();
         loan.setBook(book);
+        loan.setBookTitleAtLoan(book.getTitle());
         loan.setMember(member);
         loan.setLoanDate(today);
         loan.setDueDate(today.plusDays(LOAN_PERIOD_DAYS));
@@ -97,6 +98,10 @@ public class LoanService {
 
         Book book = loan.getBook();
 
+        if (book == null) {
+            throw new BadRequestException("Cannot return loan because its book no longer exists.");
+        }
+
         if (book.getAvailableCopies() >= book.getTotalCopies()) {
             throw new BadRequestException("Cannot return loan: available copies already at total for book id " + book.getId());
         }
@@ -116,9 +121,12 @@ public class LoanService {
     }
 
     private LoanResponse toResponse(Loan loan) {
+        Book book = loan.getBook();
+
         return new LoanResponse(
             loan.getId(),
-            loan.getBook().getId(),
+            book == null ? null : book.getId(),
+            loan.getBookTitleAtLoan(),
             loan.getMember().getId(),
             loan.getLoanDate(),
             loan.getDueDate(),

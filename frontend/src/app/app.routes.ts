@@ -8,6 +8,12 @@ import { AuthorList } from './features/authors/author-list/author-list.component
 import { AuthorForm } from './features/authors/author-form/author-form.component';
 import { CategoryList } from './features/categories/category-list/category-list.component';
 import { CategoryForm } from './features/categories/category-form/category-form.component';
+import { BookList } from './features/books/book-list/book-list.component';
+import { BookForm } from './features/books/book-form/book-form.component';
+import { MemberList } from './features/members/member-list/member-list.component';
+import { MemberForm } from './features/members/member-form/member-form.component';
+import { MemberLoanHistory } from './features/members/member-loan-history/member-loan-history.component';
+
 
 export const routes: Routes = [
     {
@@ -59,6 +65,44 @@ export const routes: Routes = [
                     {
                         path: ':id/edit',
                         component: CategoryForm,
+                    }
+                ]
+            },
+            {
+                path: 'books',
+                children: [
+                    {
+                        path: '',
+                        component: BookList,
+                    },
+                    {
+                        path: 'new',
+                        component: BookForm,
+                    },
+                    {
+                        path: ':id/edit',
+                        component: BookForm,
+                    }
+                ]
+            },
+            {
+                path: 'members',
+                children: [
+                    {
+                        path: '',
+                        component: MemberList,
+                    },
+                    {
+                        path: 'new',
+                        component: MemberForm,
+                    },
+                    {
+                        path: ':id/edit',
+                        component: MemberForm,
+                    },
+                    {
+                        path: ':id/loans',
+                        component: MemberLoanHistory,
                     }
                 ]
             }
