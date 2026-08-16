@@ -1,0 +1,82 @@
+<section class="page">
+    <header class="page-header">
+        <div>
+            <h1>Zaduzenja</h1>
+            <p>
+                {{
+                    showOverdueOnly() 
+                        ? 'Prikaz zakasnelih zaduzenja.' 
+                        : 'Prikaz svih zaduzenja u biblioteci.'
+                }}
+            </p>
+        </div>
+
+        <div class="header-actions">
+            <div class="filter-actions">
+                <button mat-button type="button" [class.selected-filter]="!showOverdueOnly()" (click)="showAllLoans()">
+                    Sva zaduzenja
+                </button>
+
+                <button mat-button type="button" [class.selected-filter]="showOverdueOnly()" (click)="showOverdueLoans()">
+                    Zakasnela zaduzenja
+                </button>
+            </div>
+
+            <a mat-flat-button routerLink="/loans/new">
+                <mat-icon>add</mat-icon>
+                Novo zaduzenje
+            </a>
+        </div>
+    </header>
+
+    @if (errorMessage(); as message) {
+        <div class="server-error" role="alert">
+            {{ message }}
+        </div>
+    }
+
+    @if (loans$ | async; as loans) {
+        @if (loans.length === 0) {
+            <p>
+                {{
+                    showOverdueOnly() 
+                        ? 'Nema zakasnelih zaduzenja.'
+                        : 'Nema evidentiranih zaduzenja u biblioteci.'
+                }}
+            </p>
+        } @else {
+            <mat-list>
+                @for (loan of loans; track loan.id) {
+                    <mat-list-item>
+                        <span matListItemTitle>
+                            {{ loan.bookTitleAtLoan }}
+                        </span>
+
+                        <span matListItemLine>
+                            Clan: {{ loan.memberName }}
+                        </span>
+
+                        <span matListItemLine>
+                            Zaduzeno: {{ formatDate(loan.loanDate) }}. 
+                            Rok: {{ formatDate(loan.dueDate) }}. Vraceno: {{ formatDate(loan.returnDate) }}
+                        </span>
+
+                        <span matListItemLine class="status" [class.returned]="isReturned(loan)" [class.overdue]="isOverdue(loan)" [class.active]="!isReturned(loan) && !isOverdue(loan)">
+                            Status: {{ getStatusLabel(loan)}}
+                        </span>
+
+                        @if (canReturn(loan)) {
+                            <div matListItemMeta class="item-actions">
+                                <button mat-icon-button type="button" [disabled]="isReturning() === loan.id" (click)="returnLoan(loan)" [attr.aria-label]="'Evidentiraj povratak knjige ' + loan.bookTitleAtLoan">
+                                    <mat-icon>
+                                        assignment_return
+                                    </mat-icon>
+                                </button>
+                            </div>
+                        }
+                    </mat-list-item>
+                }
+            </mat-list>
+        }
+    }
+</section>

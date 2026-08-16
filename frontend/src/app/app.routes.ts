@@ -13,6 +13,8 @@ import { BookForm } from './features/books/book-form/book-form.component';
 import { MemberList } from './features/members/member-list/member-list.component';
 import { MemberForm } from './features/members/member-form/member-form.component';
 import { MemberLoanHistory } from './features/members/member-loan-history/member-loan-history.component';
+import { LoanList } from './features/loans/loan-list/loan-list.component';
+import { LoanForm } from './features/loans/loan-form/loan-form.component';
 
 
 export const routes: Routes = [
@@ -103,6 +105,19 @@ export const routes: Routes = [
                     {
                         path: ':id/loans',
                         component: MemberLoanHistory,
+                    }
+                ]
+            },
+            {
+                path: 'loans',
+                children: [
+                    {
+                        path: '',
+                        component: LoanList,
+                    },
+                    {
+                        path: 'new',
+                        component: LoanForm,
                     }
                 ]
             }

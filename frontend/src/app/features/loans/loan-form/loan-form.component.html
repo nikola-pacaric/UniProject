@@ -1,0 +1,83 @@
+<section class="page">
+    <mat-card appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>Novo Zaduzenje</mat-card-title>
+            <mat-card-subtitle>
+                Izaberite aktivnog clana i dostupnu knjigu.
+            </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            @if (isLoading()) {
+                <p class="loading-message">
+                    Ucitavanje podataka...
+                </p>
+            } @else {
+                @if (activeMembers().length === 0) {
+                    <p class="empty-message">
+                        Nema aktivnih clanova za zaduzenje.
+                    </p>
+                }
+
+                @if (availableBooks().length === 0) {
+                    <p class="empty-message">
+                        Nema dostupnih knjiga za zaduzenje.
+                    </p>
+                }
+
+                <form [formGroup]="loanForm" (ngSubmit)="submit()" novalidate>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Clan</mat-label>
+
+                        <mat-select formControlName="memberId">
+                            @for (member of activeMembers(); track member.id) {
+                                <mat-option [value]="member.id">
+                                    {{ member.firstName }} {{ member.lastName }} 
+                                    - karta: {{ member.membershipCardNumber }}
+                                </mat-option>
+                            }
+                        </mat-select>
+
+                        @if (loanForm.controls.memberId.touched && loanForm.controls.memberId.hasError('min')) {
+                            <mat-error>
+                                Izaberite clana.
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Knjiga</mat-label>
+
+                        <mat-select formControlName="bookId">
+                            @for (book of availableBooks(); track book.id) {
+                                <mat-option [value]="book.id">
+                                    {{ book.title }} - dostupno: {{ book.availableCopies }}/{{ book.totalCopies }}
+                                </mat-option>
+                            }
+                        </mat-select>
+
+                        @if (loanForm.controls.bookId.touched && loanForm.controls.bookId.hasError('min')) {
+                            <mat-error>Izaberite knjigu.</mat-error>
+                        }
+                    </mat-form-field>
+
+                    @if (errorMessage(); as message) {
+                        <div class="server-error" role="alert">
+                            {{ message }}
+                        </div>
+                    }
+
+                    <div class="actions">
+                        <a mat-button routerLink="/loans">
+                            Otkazi
+                        </a>
+                        
+                        <button mat-flat-button type="submit" [disabled]="isSubmitting() || activeMembers().length === 0 || availableBooks().length === 0">
+                            {{ isSubmitting() ? 'Cuvanje...' : 'Evidentiraj zaduzenje' }}
+                        </button>
+                    </div>
+                </form>
+            }
+        </mat-card-content>
+    </mat-card>
+</section>
