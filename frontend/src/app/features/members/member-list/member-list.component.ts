@@ -6,7 +6,7 @@ import { EMPTY, Observable, catchError } from 'rxjs';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ApiErrorResponse } from '../../../core/auth/auth.models';
@@ -20,7 +20,7 @@ import { MemberService } from '../member.service';
         RouterLink,
         MatButtonModule,
         MatIconModule,
-        MatListModule,
+        MatTableModule,
         MatSnackBarModule
     ],
     templateUrl: './member-list.component.html',
@@ -31,6 +31,15 @@ export class MemberList implements OnInit {
     private readonly snackBar = inject(MatSnackBar);
 
     members$!: Observable<Member[]>;
+
+    readonly displayedColumns: string[] = [
+        'name',
+        'cardNumber',
+        'email',
+        'phone',
+        'status',
+        'actions',
+    ];
 
     readonly errorMessage = signal<string | null>(null);
     readonly isChangingStatus = signal<number | null>(null);

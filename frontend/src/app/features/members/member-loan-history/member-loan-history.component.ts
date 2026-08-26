@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { forkJoin } from 'rxjs';
 
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 
 import { ApiErrorResponse } from '../../../core/auth/auth.models';
 import { Loan } from '../../loans/loan.model';
@@ -16,7 +16,7 @@ import { MemberService } from '../member.service';
     imports: [
         RouterLink,
         MatButtonModule,
-        MatListModule
+        MatTableModule
     ],
     templateUrl: './member-loan-history.component.html',
     styleUrl: './member-loan-history.component.scss',
@@ -29,6 +29,14 @@ export class MemberLoanHistory implements OnInit {
     readonly isLoading = signal(false);
     readonly loans = signal<Loan[]>([]);
     readonly errorMessage = signal<string | null>(null);
+
+    readonly displayedColumns: string[] = [
+        'book',
+        'loanDate',
+        'dueDate',
+        'returnDate',
+        'status',
+    ];
 
     get memberId(): number | null {
         const value = this.route.snapshot.paramMap.get('id');

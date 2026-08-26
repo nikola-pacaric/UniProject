@@ -1,15 +1,17 @@
-<section class="page">
-    <mat-card appearance="outlined">
-        <mat-card-header>
-            <mat-card-title>
+<section class="page page--form">
+    <header class="page-header">
+        <div class="page-heading">
+            <h1 class="page-title">
                 {{ isEditMode ? 'Izmena knjige' : 'Nova knjiga' }}
-            </mat-card-title>
+            </h1>
 
-            <mat-card-subtitle>
-                Unesite podatke o knjizi
-            </mat-card-subtitle>
-        </mat-card-header>
+            <p class="page-description">
+                Unesite osnovne podatke o knjizi.
+            </p>
+        </div>
+    </header>
 
+    <mat-card class="page-content" appearance="outlined">
         <mat-card-content>
             @if (isLoading()) {
                 <p class="loading-message">

@@ -1,15 +1,17 @@
-<section class="page">
-    <mat-card appearance="outlined">
-        <mat-card-header>
-            <mat-card-title>
-                {{ isEditMode ? 'Izmena clana' : 'Novi clan'}}
-            </mat-card-title>
+<section class="page page--form">
+    <header class="page-header">
+        <div class="page-heading">
+            <h1 class="page-title">
+                {{ isEditMode ? 'Izmena clana' : 'Novi clan' }}
+            </h1>
 
-            <mat-card-subtitle>
-                Unesite podatke o clanu biblioteke
-            </mat-card-subtitle>
-        </mat-card-header>
+            <p class="page-description">
+                Unesite osnovne podatke o clanu biblioteke.
+            </p>
+        </div>
+    </header>
 
+    <mat-card class="page-content" appearance="outlined">
         <mat-card-content>
             @if (isLoading()) {
                 <p class="loading-message">

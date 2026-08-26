@@ -20,13 +20,7 @@ html {
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
   color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
   // variables at https://material.angular.dev/guide/system-variables
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
@@ -36,4 +30,134 @@ body {
   margin: 0;
   height: 100%;
 }
-/* You can add global styles to this file, and also import other style files */
+
+:root {
+  --app-page-max-width: 1200px;
+  --app-form-max-width: 800px;
+  --app-page-padding: clamp(16px, 3vw, 32px);
+  --app-section-gap: 24px;
+  --app-form-gap: 16px;
+  --app-action-gap: 8px;
+  --app-record-gap: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.page {
+  width: 100%;
+  max-width: var(--app-page-max-width);
+  margin-inline: auto;
+}
+
+.page--form {
+  max-width: var(--app-form-max-width);
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--app-section-gap);
+  margin-bottom: var(--app-section-gap);
+}
+
+.page-heading {
+  min-width: 0;
+}
+
+.page-title {
+  margin: 0;
+  font: var(--mat-sys-headline-medium);
+}
+
+.page-description {
+  margin: 8px 0 0;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: var(--app-action-gap);
+}
+
+.page-content {
+  min-width: 0;
+}
+
+.table-container .mat-mdc-header-row {
+  background: var(--mat-sys-surface-container-low);
+}
+
+.table-container .mat-mdc-header-cell,
+.table-container .mat-mdc-cell {
+  padding: 12px 16px;
+  vertical-align: middle;
+}
+
+.table-container .mat-mdc-cell {
+  line-height: 1.5;
+}
+
+.table-container .mat-mdc-row:last-child .mat-mdc-cell {
+  border-bottom: 0;
+}
+
+.page--form form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--app-form-gap);
+  margin: 0;
+}
+
+.page--form .form-grid {
+  gap: var(--app-form-gap);
+}
+
+.page--form mat-form-field {
+  width: 100%;
+}
+
+.page--form .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--app-action-gap);
+  margin-top: 8px;
+}
+
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.actions-cell > * + * {
+  margin-inline-start: var(--app-action-gap);
+}
+
+.card-actions {
+  justify-content: flex-end;
+  gap: var(--app-action-gap);
+}
+
+@media (max-width: 700px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .page-actions {
+    justify-content: flex-start;
+  }
+
+  .page--form .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+}

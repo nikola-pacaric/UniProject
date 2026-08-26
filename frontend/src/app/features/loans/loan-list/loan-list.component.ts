@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
 import { EMPTY, Observable, catchError, forkJoin, map } from 'rxjs';
 
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -24,7 +24,7 @@ interface LoanRow extends Loan {
     imports: [
         RouterLink,
         MatButtonModule,
-        MatListModule,
+        MatTableModule,
         MatIconModule,
         MatSnackBarModule,
         AsyncPipe
@@ -38,6 +38,16 @@ export class LoanList implements OnInit {
     private readonly snackBar = inject(MatSnackBar);
 
     loans$!: Observable<LoanRow[]>;
+
+    readonly displayedColumns: string[] = [
+        'book',
+        'member',
+        'loanDate',
+        'dueDate',
+        'returnDate',
+        'status',
+        'actions',
+    ];
 
     readonly errorMessage = signal<string | null>(null);
     readonly isReturning = signal<number | null>(null);

@@ -1,59 +1,91 @@
 <section class="page">
     <header class="page-header">
-        <div>
-            @if (member(); as currentMember) {
-                <h1>Istorija zaduzeja</h1>
-                <p>
-                    {{ currentMember.firstName }}
-                    {{ currentMember.lastName }}
-                    . Clanska karta: 
-                    {{ currentMember.membershipCardNumber }}
-                </p>
-            } @else {
-                <h1>Istorija zaduzenja</h1>
-            }
+        <div class="page-heading">
+            <h1 class="page-title">Istorija zaduzenja</h1>
+
+            <p class="page-description">
+                @if (member(); as currentMember) {
+                    Pregled zaduzenja za
+                    {{ currentMember.firstName }} {{ currentMember.lastName }}.
+                    Clanska karta: {{ currentMember.membershipCardNumber }}.
+                } @else {
+                    Pregled svih prethodnih zaduzenja clana.
+                }
+            </p>
         </div>
 
-        <a mat-button routerLink="/members">
-            Nazad na clanove
-        </a>
+        <div class="page-actions">
+            <a mat-button routerLink="/members">
+                Nazad na clanove
+            </a>
+        </div>
     </header>
 
-    @if (isLoading()) {
-        <p>Ucitavanje istorije zaduzenja...</p>
-    } @else {
-        @if (errorMessage(); as message) {
-            <div class="server-error" role="alert">
-                {{ message }}
-            </div>
-        }
-
-        @if (loans().length === 0) {
-            <p>Clan nema zaduzenja.</p>
+    <div class="page-content">
+        @if (isLoading()) {
+            <p>Ucitavanje istorije zaduzenja...</p>
         } @else {
-            <mat-list>
-                @for (loan of loans(); track loan.id) {
-                    <mat-list-item>
-                        <span matListItemTitle>
-                            {{ loan.bookTitleAtLoan }}
-                        </span>
+            @if (errorMessage(); as message) {
+                <div class="server-error" role="alert">
+                    {{ message }}
+                </div>
+            }
 
-                        <span matListItemLine>
-                            Zaduzeno:
-                            {{ formatDate(loan.loanDate) }}
-                            . Rok:
-                            {{ formatDate(loan.dueDate) }}
-                        </span>
+            @if (loans().length === 0) {
+                <p>Clan nema zaduzenja.</p>
+            } @else {
+                <div class="table-container">
+                    <table mat-table [dataSource]="loans()">
+                        <ng-container matColumnDef="book">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Knjiga
+                            </th>
+                            <td mat-cell *matCellDef="let loan">
+                                {{ loan.bookTitleAtLoan }}
+                            </td>
+                        </ng-container>
 
-                        <span matListItemLine>
-                            Vraceno:
-                            {{ formatDate(loan.returnDate) }}
-                            Status:
-                            {{ getStatusLabel(loan) }}
-                        </span>
-                    </mat-list-item>
-                }
-            </mat-list>
+                        <ng-container matColumnDef="loanDate">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Zaduzeno
+                            </th>
+                            <td mat-cell *matCellDef="let loan">
+                                {{ formatDate(loan.loanDate) }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="dueDate">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Rok vracanja
+                            </th>
+                            <td mat-cell *matCellDef="let loan">
+                                {{ formatDate(loan.dueDate) }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="returnDate">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Vraceno
+                            </th>
+                            <td mat-cell *matCellDef="let loan">
+                                {{ formatDate(loan.returnDate) }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="status">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Status
+                            </th>
+                            <td mat-cell *matCellDef="let loan">
+                                {{ getStatusLabel(loan) }}
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                    </table>
+                </div>
+            }
         }
-    }
+    </div>
 </section>

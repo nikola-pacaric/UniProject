@@ -1,49 +1,96 @@
 <section class="page">
     <header class="page-header">
-        <div>
-            <h1>Kategorije</h1>
-            <p>Upravljanje kategorijama knjiga.</p>
+        <div class="page-heading">
+            <h1 class="page-title">Kategorije</h1>
+            <p class="page-description">Pregled i upravljanje kategorijama knjiga.</p>
         </div>
 
-        <a mat-flat-button routerLink="/categories/new">
-            <mat-icon>add</mat-icon>
-            Dodaj kategoriju
-        </a>
+        <div class="page-actions">
+            <a mat-flat-button routerLink="/categories/new">
+                <mat-icon>add</mat-icon>
+                Dodaj kategoriju
+            </a>
+        </div>
     </header>
-
-    @if (errorMessage(); as message) {
-        <div class="server-error" role="alert">
-            {{ message }}
-        </div>
-    }
-
-    @if (categories$ | async; as categories) {
-        @if (categories.length === 0) {
-            <p>Nema registrovanih kategorija.</p>
-        } @else {
-            <mat-list>
-                @for (category of categories; track category.id) {
-                    <mat-list-item>
-                        <span matListItemTitle>
-                            {{ category.name }}
-                        </span>
-
-                        <span matListItemLine>
-                            {{ category.description || 'Opis nije unesen.'}}
-                        </span>
-
-                        <div matListItemMeta class="item-actions">
-                            <a mat-icon-button [routerLink]="['/categories', category.id, 'edit']" aria-label="Izmeni kategoriju">
-                                <mat-icon>edit</mat-icon>
-                            </a>
-
-                            <button mat-icon-button type="button" [disabled]="isDeleting() === category.id" (click)="deleteCategory(category)" aria-label="Obrisi kategoriju">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </mat-list-item>
-                }
-            </mat-list>
+    <div class="page-content">
+        @if (errorMessage(); as message) {
+            <div class="server-error" role="alert">
+                {{ message }}
+            </div>
         }
-    }
+
+        @if (categories$ | async; as categories) {
+            @if (categories.length === 0) {
+                <p>Nema registrovanih kategorija.</p>
+            } @else {
+                <div class="table-container">
+                    <table mat-table [dataSource]="categories">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Naziv
+                            </th>
+
+                            <td mat-cell *matCellDef="let category">
+                                {{ category.name }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="description">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Opis
+                            </th>
+
+                            <td
+                                mat-cell
+                                *matCellDef="let category"
+                                class="description-cell"
+                            >
+                                {{ category.description || 'Opis nije unet.' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Akcije
+                            </th>
+
+                            <td
+                                mat-cell
+                                *matCellDef="let category"
+                                class="actions-cell"
+                            >
+                                <a
+                                mat-icon-button
+                                [routerLink]="['/categories', category.id, 'edit']"
+                                aria-label="Izmeni kategoriju"
+                                >
+                                <mat-icon>edit</mat-icon>
+                                </a>
+
+                                <button
+                                mat-icon-button
+                                type="button"
+                                [disabled]="isDeleting() === category.id"
+                                (click)="deleteCategory(category)"
+                                aria-label="Obriši kategoriju"
+                                >
+                                <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumns"
+                        ></tr>
+
+                        <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                </div>
+            }
+        }
+    </div>
 </section>

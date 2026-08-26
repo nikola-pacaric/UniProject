@@ -6,7 +6,7 @@ import { Observable, catchError, EMPTY } from 'rxjs';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ApiErrorResponse } from '../../../core/auth/auth.models';
@@ -17,7 +17,7 @@ import { CategoryService } from '../category.service';
     selector: 'app-category-list',
     imports: [
         AsyncPipe, 
-        MatListModule,
+        MatTableModule,
         MatIconModule,
         MatButtonModule,
         MatSnackBarModule,
@@ -31,6 +31,13 @@ export class CategoryList implements OnInit {
     private readonly snackBar = inject(MatSnackBar);
 
     categories$!: Observable<Category[]>;
+
+    readonly displayedColumns = [
+        'name',
+        'description',
+        'actions',
+    ];
+
     readonly errorMessage = signal<string | null>(null);
     readonly isDeleting = signal<number | null>(null);
 

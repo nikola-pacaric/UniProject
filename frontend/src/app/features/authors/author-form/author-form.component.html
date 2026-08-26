@@ -1,14 +1,17 @@
-<section class="page">
-    <mat-card appearance="outlined">
-        <mat-card-header>
-            <mat-card-title>
-                {{ isEditMode ? 'Izmena autora' : 'Novi autor'}}
-            </mat-card-title>
-            <mat-card-subtitle>
-                Unesite podatke o autoru
-            </mat-card-subtitle>
-        </mat-card-header>
+<section class="page page--form">
+    <header class="page-header">
+        <div class="page-heading">
+            <h1 class="page-title">
+                {{ isEditMode ? 'Izmena autora' : 'Novi autor' }}
+            </h1>
 
+            <p class="page-description">
+                Unesite osnovne podatke o autoru.
+            </p>
+        </div>
+    </header>
+
+    <mat-card class="page-content" appearance="outlined">
         <mat-card-content>
             @if (isLoading()) {
                 <p>Ucitavanje autora...</p>
@@ -39,7 +42,7 @@
 
                     @if (errorMessage(); as message) {
                         <div class="server-error" role="alert">
-                            {{ message}}
+                            {{ message }}
                         </div>
                     }
 

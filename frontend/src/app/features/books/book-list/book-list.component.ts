@@ -1,21 +1,21 @@
-import { Component, inject, OnInit, signal } from "@angular/core";
-import { Book } from "../book.model";
-import { AsyncPipe } from "@angular/common";
-import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
-import { MatButtonModule } from "@angular/material/button";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatIconModule } from "@angular/material/icon";
-import { MatInputModule } from "@angular/material/input";
-import { MatListModule } from "@angular/material/list";
-import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { BookService } from "../book.service";
-import { AuthorService } from "../../authors/author.service";
-import { CategoryService } from "../../categories/category.service";
-import { Author } from "../../authors/author.model";
-import { Category } from "../../categories/category.model";
-import { HttpErrorResponse } from "@angular/common/http";
-import { ApiErrorResponse } from "../../../core/auth/auth.models";
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { Book } from '../book.model';
+import { AsyncPipe } from '@angular/common';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { BookService } from '../book.service';
+import { AuthorService } from '../../authors/author.service';
+import { CategoryService } from '../../categories/category.service';
+import { Author } from '../../authors/author.model';
+import { Category } from '../../categories/category.model';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ApiErrorResponse } from '../../../core/auth/auth.models';
 
 import {
     EMPTY,
@@ -41,7 +41,7 @@ interface BookRow extends Book {
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
-        MatListModule,
+        MatTableModule,
         MatSnackBarModule
     ],
     templateUrl: './book-list.component.html',
@@ -55,14 +55,24 @@ export class BookList implements OnInit {
     private readonly formBuilder = inject(FormBuilder);
 
     books$!: Observable<BookRow[]>;
-    
+
+    readonly displayedColumns: string[] = [
+        'title',
+        'author',
+        'category',
+        'isbn',
+        'publicationYear',
+        'availability',
+        'actions'
+    ];
+
     readonly errorMessage = signal<string | null>(null);
     readonly isDeleting = signal<number | null>(null);
     readonly searchQuery = signal("");
     readonly searchForm = this.formBuilder.nonNullable.group({
         query: [''],
     });
-
+    
     ngOnInit(): void {
         this.loadBooks();
     }

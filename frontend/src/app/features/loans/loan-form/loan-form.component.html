@@ -1,12 +1,13 @@
-<section class="page">
-    <mat-card appearance="outlined">
-        <mat-card-header>
-            <mat-card-title>Novo Zaduzenje</mat-card-title>
-            <mat-card-subtitle>
+<section class="page page--form">
+    <header class="page-header">
+        <div class="page-heading">
+            <h1 class="page-title">Novo zaduzenje</h1>
+            <p class="page-description">
                 Izaberite aktivnog clana i dostupnu knjigu.
-            </mat-card-subtitle>
-        </mat-card-header>
-
+            </p>
+        </div>
+    </header>
+    <mat-card class="page-content" appearance="outlined">
         <mat-card-content>
             @if (isLoading()) {
                 <p class="loading-message">

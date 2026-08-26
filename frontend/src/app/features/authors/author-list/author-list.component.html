@@ -1,49 +1,97 @@
 <section class="page">
     <header class="page-header">
-        <div>
-            <h1>Autori</h1>
-            <p>Upravljanje autorima knjiga.</p>
+        <div class="page-heading">
+            <h1 class="page-title">Autori</h1>
+            <p class="page-description">Upravljanje autorima knjiga.</p>
         </div>
 
-        <a mat-flat-button routerLink="/authors/new">
-            <mat-icon>add</mat-icon>
-            Dodaj autora
-        </a>
+        <div class="page-actions">
+            <a mat-flat-button routerLink="/authors/new">
+                <mat-icon>add</mat-icon>
+                Dodaj autora
+            </a>
+        </div>
     </header>
 
-    @if (errorMessage(); as message) {
-        <div class="server-error" role="alert">
-            {{ message }}
-        </div>
-    }
-
-    @if (authors$ | async; as authors) {
-        @if (authors.length === 0) {
-            <p>Nema registrovanih autora.</p>
-        } @else {
-            <mat-list>
-                @for (author of authors; track author.id) {
-                    <mat-list-item>
-                        <span matListItemTitle>
-                            {{ author.firstName }} {{ author.lastName }}
-                        </span>
-
-                        <span matListItemLine>
-                            {{ author.biography || 'Biografija nije unesena.'}}
-                        </span>
-
-                        <div matListItemMeta class="item-actions">
-                            <a mat-icon-button [routerLink]="['/authors', author.id, 'edit']" aria-label="Izmeni autora">
-                                <mat-icon>edit</mat-icon>
-                            </a>
-
-                            <button mat-icon-button type="button" [disabled]="isDeleting() === author.id" (click)="deleteAuthor(author)" aria-label="Obrisi autora">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </mat-list-item>
-                }
-            </mat-list>
+    <div class="page-content">
+        @if (errorMessage(); as message) {
+            <div class="server-error" role="alert">
+                {{ message }}
+            </div>
         }
-    }
+
+        @if (authors$ | async; as authors) {
+            @if (authors.length === 0) {
+                <p>Nema registrovanih autora.</p>
+            } @else {
+                <div class="table-container">
+                    <table mat-table [dataSource]="authors">
+                        <ng-container matColumnDef="name">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Ime i prezime
+                            </th>
+
+                            <td mat-cell *matCellDef="let author">
+                                {{ author.firstName }} {{ author.lastName }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="biography">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Biografija
+                            </th>
+
+                            <td
+                                mat-cell
+                                *matCellDef="let author"
+                                class="description-cell"
+                            >
+                                {{ author.biography || 'Biografija nije uneta.' }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Akcije
+                            </th>
+
+                            <td
+                                mat-cell
+                                *matCellDef="let author"
+                                class="actions-cell"
+                            >
+                                <a
+                                    mat-icon-button
+                                    [routerLink]="['/authors', author.id, 'edit']"
+                                    aria-label="Izmeni autora"
+                                >
+                                    <mat-icon>edit</mat-icon>
+                                </a>
+
+                                <button
+                                    mat-icon-button
+                                    type="button"
+                                    [disabled]="isDeleting() === author.id"
+                                    (click)="deleteAuthor(author)"
+                                    aria-label="Obriši autora"
+                                >
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+
+                        <tr
+                        mat-header-row
+                        *matHeaderRowDef="displayedColumns"
+                        ></tr>
+
+                        <tr
+                        mat-row
+                        *matRowDef="let row; columns: displayedColumns"
+                        ></tr>
+                    </table>
+                </div>
+            }
+        }
+    </div>
 </section>

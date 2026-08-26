@@ -51,9 +51,8 @@ mat-toolbar {
 }
 
 .shell-main {
-    box-sizing: border-box;
     min-height: calc(100dvh - 64px);
-    padding: 32px;
+    padding: var(--app-page-padding);
     background: var(--mat-sys-surface-container-low);
 }
 

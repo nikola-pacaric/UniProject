@@ -1,69 +1,122 @@
 <section class="page">
     <header class="page-header">
-        <div>
-            <h1>Knjige</h1>
-            <p>Upravljanje knjigama u biblioteci</p>
+        <div class="page-heading">
+            <h1 class="page-title">Knjige</h1>
+            <p class="page-description">Upravljanje knjigama u biblioteci</p>
         </div>
 
-        <a mat-flat-button routerLink="/books/new">
-            <mat-icon>add</mat-icon>
-            Dodaj knjigu
-        </a>
+        <div class="page-actions">
+            <a mat-flat-button routerLink="/books/new">
+                <mat-icon>add</mat-icon>
+                Dodaj knjigu
+            </a>
+        </div>
     </header>
 
-    <form class="search-form" [formGroup]="searchForm" (ngSubmit)="search()">
-        <mat-form-field appearance="outline">
-            <mat-label>Pretraga knjiga</mat-label>
-            <input matInput formControlName="query" 
-                placeholder="Naslov, autor, kategorija ili ISBN"/>
-        </mat-form-field>
+    <div class="page-content">
+        <form class="search-form" [formGroup]="searchForm" (ngSubmit)="search()">
+            <mat-form-field appearance="outline">
+                <mat-label>Pretraga knjiga</mat-label>
+                <input matInput formControlName="query" 
+                    placeholder="Naslov, autor, kategorija ili ISBN"/>
+            </mat-form-field>
 
-        <button mat-flat-button type="submit">Pretrazi</button>
+            <button mat-flat-button type="submit">Pretrazi</button>
 
-        <button mat-button type="button"
-            (click)="clearSearch()" [disabled]="!searchQuery()">Ocisti</button>
-    </form>
+            <button mat-button type="button"
+                (click)="clearSearch()" [disabled]="!searchQuery()">Ocisti</button>
+        </form>
 
-    @if (errorMessage(); as message) {
-        <div class="server-error" role="alert">
-            {{ message }}
-        </div>
-    }
-
-    @if (books$ | async; as books) {
-        @if (books.length === 0) {
-            <p>Nema pronadjenih knjiga.</p>
-        } @else {
-            <mat-list>
-                @for (book of books; track book.id) {
-                    <mat-list-item>
-                        <span matListItemTitle>{{ book.title }}</span>
-                        <span matListItemLine> Autor:{{ book.authorName }}</span>
-                        <span matListItemLine> 
-                            Kategorija: {{ book.categoryName }}
-                            . ISBN: {{ book.isbn }}
-                            . Dostupno: {{ book.availableCopies }}/{{ book.totalCopies }}
-                        </span>
-
-                        <div matListItemMeta class="item-actions">
-                            <a mat-icon-button
-                                [routerLink]="['/books', book.id, 'edit']"
-                                aria-label="Izmeni knjigu">
-                                <mat-icon>edit</mat-icon>
-                            </a>
-
-                            <button 
-                                mat-icon-button
-                                type="button"
-                                [disabled]="isDeleting() === book.id"
-                                (click)="deleteBook(book)"
-                                aria-label="Obrisi knjigu">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        </div>
-                    </mat-list-item>
-                }
-            </mat-list>
+        @if (errorMessage(); as message) {
+            <div class="server-error" role="alert">
+                {{ message }}
+            </div>
         }
-    }
+
+        @if (books$ | async; as books) {
+            @if (books.length === 0) {
+                <p>Nema pronadjenih knjiga.</p>
+            } @else {
+                <div class="table-container">
+                    <table mat-table [dataSource]="books">
+                        <ng-container matColumnDef="title">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Naslov
+                            </th>
+                            <td mat-cell *matCellDef="let book">
+                                {{ book.title }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="author">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Autor
+                            </th>
+                            <td mat-cell *matCellDef="let book">
+                                {{ book.authorName }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="category">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Kategorija
+                            </th>
+                            <td mat-cell *matCellDef="let book">
+                                {{ book.categoryName }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="isbn">
+                            <th mat-header-cell *matHeaderCellDef>
+                                ISBN
+                            </th>
+                            <td mat-cell *matCellDef="let book">
+                                {{ book.isbn }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="publicationYear">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Godina izdanja
+                            </th>
+                            <td mat-cell *matCellDef="let book">
+                                {{ book.publicationYear }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="availability">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Dostupnost
+                            </th>
+                            <td mat-cell *matCellDef="let book">
+                                {{ book.availableCopies }}/{{ book.totalCopies }}
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="actions">
+                            <th mat-header-cell *matHeaderCellDef>
+                                Akcije
+                            </th>
+                            <td mat-cell *matCellDef="let book" class="actions-cell">
+                                <a mat-icon-button [routerLink]="['/books', book.id, 'edit']" aria-label="Izmeni knjigu">
+                                    <mat-icon>edit</mat-icon>
+                                </a>
+
+                                <button 
+                                    mat-icon-button 
+                                    type="button" 
+                                    [disabled]="isDeleting() === book.id" 
+                                    (click)="deleteBook(book)"
+                                    aria-label="Obrisi knjigu">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                </div>
+            }
+        }
+    </div>
 </section>

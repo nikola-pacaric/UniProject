@@ -1,28 +1,42 @@
-.page {
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    margin-bottom: 24px;
-}
-
-.page-header h1 {
-    margin: 0;
-}
-
-.page-header p {
-    margin: 8px 0 0;
-    color: var(--mat-sys-on-surface-variant);
-}
-
-mat-list {
+.table-container {
+    overflow-x: auto;
     border: 1px solid var(--mat-sys-outline-variant);
     border-radius: 8px;
+    background: var(--mat-sys-surface);
+}
+
+table {
+    width: 100%;
+    min-width: 720px;
+}
+
+th.mat-mdc-header-cell {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+tr.mat-mdc-header-row {
+    height: 48px;
+}
+
+tr.mat-mdc-row {
+    height: 52px;
+}
+
+.mat-column-book {
+    min-width: 220px;
+}
+
+.mat-column-loanDate,
+.mat-column-dueDate,
+.mat-column-returnDate {
+    width: 125px;
+    white-space: nowrap;
+}
+
+.mat-column-status {
+    width: 100px;
+    white-space: nowrap;
 }
 
 .server-error {
@@ -31,11 +45,4 @@ mat-list {
     color: var(--mat-sys-on-error-container);
     background: var(--mat-sys-error-container);
     border-radius: 8px;
-}
-
-@media (max-width: 700px) {
-    .page-header {
-        flex-direction: column;
-        align-items: stretch;
-    }
 }
