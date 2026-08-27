@@ -9,7 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { MemberRequest } from '../member.model';
 import { MemberService } from '../member.service';
 
@@ -33,6 +33,7 @@ export class MemberForm implements OnInit {
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
     private readonly snackBar = inject(MatSnackBar);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
     readonly isLoading = signal(false);
     readonly isSubmitting = signal(false);
@@ -76,8 +77,14 @@ export class MemberForm implements OnInit {
                 this.isLoading.set(false);
             },
             error: (error: HttpErrorResponse) => {
-                this.errorMessage.set(error.error?.message ?? 'Ucitavanje clana nije uspelo.');
                 this.isLoading.set(false);
+
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje člana nije uspelo.',
+                    ),
+                );
             },
         });
     }
@@ -111,8 +118,8 @@ export class MemberForm implements OnInit {
             next: () => {
                 this.snackBar.open(
                     this.isEditMode
-                        ? 'Clan je uspesno izmenjen.'
-                        : 'Clan je uspesno kreiran.',
+                        ? 'Član je uspešno izmenjen.'
+                        : 'Član je uspešno kreiran.',
                     'Zatvori',
                     { duration: 3000 }
                 );
@@ -121,10 +128,11 @@ export class MemberForm implements OnInit {
             error: (error: HttpErrorResponse) => {
                 this.isSubmitting.set(false);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-                this.errorMessage.set( apiError?.message
-                        ?? 'Cuvanje clana nije uspelo.',
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Čuvanje člana nije uspelo.',
+                    ),
                 );
             },
         });

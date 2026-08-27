@@ -15,7 +15,7 @@
         <mat-card-content>
             @if (isLoading()) {
                 <p class="loading-message">
-                    Ucitavanje podataka knjige...
+                    Učitavanje podataka knjige...
                 </p>
             } @else {
                 <form [formGroup]="bookForm" (ngSubmit)="submit()" novalidate>
@@ -28,7 +28,7 @@
                                 <mat-error>Naslov je obavezan.</mat-error>
                             }
                             @if (bookForm.controls.title.touched && bookForm.controls.title.hasError('maxlength')) {
-                                <mat-error>Naslov ne sme biti duzi od 255 karaktera.</mat-error>
+                                <mat-error>Naslov ne sme biti duži od 255 karaktera.</mat-error>
                             }
                         </mat-form-field>
 
@@ -40,7 +40,7 @@
                                 <mat-error>ISBN je obavezan.</mat-error>
                             }
                             @if (bookForm.controls.isbn.touched && bookForm.controls.isbn.hasError('maxlength')) {
-                                <mat-error>ISBN ne sme biti duzi od 20 karaktera.</mat-error>
+                                <mat-error>ISBN ne sme biti duži od 20 karaktera.</mat-error>
                             }
                         </mat-form-field>
 
@@ -61,7 +61,7 @@
                                 <mat-error>Ukupan broj primeraka je obavezan.</mat-error>
                             }
                             @if (bookForm.controls.totalCopies.touched && bookForm.controls.totalCopies.hasError('min')) {
-                                <mat-error>Ukupan broj primeraka ne moze biti negativan.</mat-error>
+                                <mat-error>Ukupan broj primeraka ne može biti negativan.</mat-error>
                             }
                         </mat-form-field>
 
@@ -105,10 +105,10 @@
 
                     <div class="actions">
                         <a mat-button routerLink="/books">
-                            Otkazi
+                            Otkaži
                         </a>
                         <button mat-flat-button type="submit" [disabled]="isSubmitting()">
-                            {{ isSubmitting() ? 'Cuvanje...' : 'Sacuvaj' }}
+                            {{ isSubmitting() ? 'Čuvanje...' : 'Sačuvaj' }}
                         </button>
                     </div>
                 </form>

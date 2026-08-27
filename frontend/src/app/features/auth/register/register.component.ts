@@ -8,7 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ApiErrorResponse, RegisterRequest, } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
+import { RegisterRequest } from '../../../core/auth/auth.models';
 import { AuthService } from '../../../core/auth/auth.service';
 
 function passwordMatchValidator(form: AbstractControl, ): ValidationErrors | null {
@@ -34,9 +35,10 @@ function passwordMatchValidator(form: AbstractControl, ): ValidationErrors | nul
 })
 export class Register {
   private readonly formBuilder = inject(FormBuilder);
-  private readonly authService = inject(AuthService)
+  private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
@@ -76,13 +78,19 @@ export class Register {
       next: () => {
         this.isSubmitting.set(false);
 
-        this.snackBar.open('Registracija je uspesna. Sada se prijavite.', 'Zatvori', { duration: 5000, });
+        this.snackBar.open('Registracija je uspešna. Sada se prijavite.', 'Zatvori', { duration: 5000, });
 
         void this.router.navigate(['/login']);
       },
       error: (error: HttpErrorResponse) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(this.getErrorMessage(error));
+        
+        this.errorMessage.set(
+          this.apiErrorMessage.getMessage(
+            error,
+            'Registracija nije uspela.',
+          ),
+        );
       },
     });
   }
@@ -93,25 +101,5 @@ export class Register {
       username: this.registerForm.controls.username.value.trim(),
       email: this.registerForm.controls.email.value.trim(),
     });
-  }
-
-  private getErrorMessage(error: HttpErrorResponse): string {
-    if (error.status === 0) {
-      return 'Backend nije dostupan. Proverite da li je server pokrenut.';
-    }
-
-    const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-    if (apiError?.message === 'Username already taken') {
-      return 'Korisnicko ime je vec zauzeto.';
-    }
-
-    if (apiError?.message === 'Email already registered') {
-      return 'Email adresa je vec registrovana.';
-    }
-
-    const firstFieldError = apiError?.fieldErrors ? Object.values(apiError.fieldErrors)[0] : null;
-
-    return (firstFieldError ?? apiError?.message ?? 'Registracija nije uspela.');
   }
 }

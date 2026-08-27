@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';   
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { Author } from '../../authors/author.model';
 import { AuthorService } from '../../authors/author.service';
 import { Category } from '../../categories/category.model';
@@ -38,6 +38,7 @@ export class BookForm implements OnInit {
     private readonly bookService = inject(BookService);
     private readonly authorService = inject(AuthorService);
     private readonly categoryService = inject(CategoryService);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);  
     private readonly snackBar = inject(MatSnackBar);
     private readonly formBuilder = inject(FormBuilder);
     private readonly route = inject(ActivatedRoute);
@@ -99,10 +100,11 @@ export class BookForm implements OnInit {
             error: (error: HttpErrorResponse) => {
                 this.isLoading.set(false);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
                 this.errorMessage.set(
-                    apiError?.message ?? 'Učitavanje podataka knjige nije uspelo.',
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje podataka za knjigu nije uspelo.',
+                    ),
                 );
             },
         });
@@ -148,10 +150,11 @@ export class BookForm implements OnInit {
             error: (error: HttpErrorResponse) => {
                 this.isSubmitting.set(false);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
                 this.errorMessage.set(
-                    apiError?.message ?? 'Doslo je do greske prilikom cuvanja knjige.',
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Čuvanje knjige nije uspelo.',
+                    ),
                 );
             },
         });

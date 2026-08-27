@@ -2,11 +2,11 @@
     <header class="page-header">
         <div class="page-heading">
             <h1 class="page-title">
-                {{ isEditMode ? 'Izmena clana' : 'Novi clan' }}
+                {{ isEditMode ? 'Izmena člana' : 'Novi član' }}
             </h1>
 
             <p class="page-description">
-                Unesite osnovne podatke o clanu biblioteke.
+                Unesite osnovne podatke o članu biblioteke.
             </p>
         </div>
     </header>
@@ -15,7 +15,7 @@
         <mat-card-content>
             @if (isLoading()) {
                 <p class="loading-message">
-                    Ucitavanje clana...
+                    Učitavanje člana...
                 </p>
             } @else {
                 <form [formGroup]="memberForm" (ngSubmit)="submit()" novalidate>
@@ -55,18 +55,18 @@
                         </mat-form-field>
 
                         <mat-form-field appearance="outline">
-                            <mat-label>Broj clanske karte</mat-label>
+                            <mat-label>Broj članske karte</mat-label>
                             <input matInput formControlName="membershipCardNumber" autocomplete="off"/>
 
                             @if (memberForm.controls.membershipCardNumber.touched && memberForm.controls.membershipCardNumber.hasError('required')) {
                                 <mat-error>
-                                    Broj clanske karte je obavezan.
+                                    Broj članske karte je obavezan.
                                 </mat-error>
                             }
 
                             @if (memberForm.controls.membershipCardNumber.touched && memberForm.controls.membershipCardNumber.hasError('maxlength')) {
                                 <mat-error>
-                                    Broj ne sme imati vise od 50 karaktera.
+                                    Broj ne sme imati više od 50 karaktera.
                                 </mat-error>
                             }
                         </mat-form-field>
@@ -94,7 +94,7 @@
 
                             @if (memberForm.controls.phone.touched && memberForm.controls.phone.hasError('maxlength')) {
                                 <mat-error>
-                                    Telefon ne sme imati vise od 50 karaktera.
+                                    Telefon ne sme imati više od 50 karaktera.
                                 </mat-error>
                             }
                         </mat-form-field>
@@ -108,11 +108,11 @@
 
                     <div class="actions">
                         <a mat-button routerLink="/members">
-                            Otkazi
+                            Otkaži
                         </a>
 
                         <button mat-flat-button type="submit" [disabled]="isSubmitting()">
-                            {{ isSubmitting() ? 'Cuvanje...' : 'Sacuvaj' }}
+                            {{ isSubmitting() ? 'Čuvanje...' : 'Sačuvaj' }}
                         </button>
                     </div>
                 </form>

@@ -1,9 +1,9 @@
 <section class="page page--form">
     <header class="page-header">
         <div class="page-heading">
-            <h1 class="page-title">Novo zaduzenje</h1>
+            <h1 class="page-title">Novo zaduženje</h1>
             <p class="page-description">
-                Izaberite aktivnog clana i dostupnu knjigu.
+                Izaberite aktivnog člana i dostupnu knjigu.
             </p>
         </div>
     </header>
@@ -11,24 +11,24 @@
         <mat-card-content>
             @if (isLoading()) {
                 <p class="loading-message">
-                    Ucitavanje podataka...
+                    Učitavanje podataka...
                 </p>
             } @else {
                 @if (activeMembers().length === 0) {
                     <p class="empty-message">
-                        Nema aktivnih clanova za zaduzenje.
+                        Nema aktivnih članova za zaduženje.
                     </p>
                 }
 
                 @if (availableBooks().length === 0) {
                     <p class="empty-message">
-                        Nema dostupnih knjiga za zaduzenje.
+                        Nema dostupnih knjiga za zaduženje.
                     </p>
                 }
 
                 <form [formGroup]="loanForm" (ngSubmit)="submit()" novalidate>
                     <mat-form-field appearance="outline">
-                        <mat-label>Clan</mat-label>
+                        <mat-label>Član</mat-label>
 
                         <mat-select formControlName="memberId">
                             @for (member of activeMembers(); track member.id) {
@@ -41,7 +41,7 @@
 
                         @if (loanForm.controls.memberId.touched && loanForm.controls.memberId.hasError('min')) {
                             <mat-error>
-                                Izaberite clana.
+                                Izaberite člana.
                             </mat-error>
                         }
                     </mat-form-field>
@@ -70,11 +70,11 @@
 
                     <div class="actions">
                         <a mat-button routerLink="/loans">
-                            Otkazi
+                            Otkaži
                         </a>
                         
                         <button mat-flat-button type="submit" [disabled]="isSubmitting() || activeMembers().length === 0 || availableBooks().length === 0">
-                            {{ isSubmitting() ? 'Cuvanje...' : 'Evidentiraj zaduzenje' }}
+                            {{ isSubmitting() ? 'Čuvanje...' : 'Evidentiraj zaduženje' }}
                         </button>
                     </div>
                 </form>

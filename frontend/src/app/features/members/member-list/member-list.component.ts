@@ -8,8 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { Member } from '../member.model';
 import { MemberService } from '../member.service';
 
@@ -29,6 +30,8 @@ import { MemberService } from '../member.service';
 export class MemberList implements OnInit {
     private readonly memberService = inject(MemberService);
     private readonly snackBar = inject(MatSnackBar);
+    private readonly confirmationDialog = inject(ConfirmationDialogService);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
     members$!: Observable<Member[]>;
 
@@ -49,10 +52,28 @@ export class MemberList implements OnInit {
     }
 
     toggleStatus(member: Member): void {
+        if (!member.active) {
+            this.changeStatus(member);
+            return;
+        }
+
+        this.confirmationDialog.confirm({
+            title: 'Deaktivacija člana',
+            message: `Da li želite da deaktivirate člana ${member.firstName} ${member.lastName}?`,
+            confirmText: 'Deaktiviraj',
+        }).subscribe((confirmed) => {
+            if (!confirmed) {
+                return;
+            }
+            this.changeStatus(member);
+        });
+    }
+
+    private changeStatus(member: Member): void {
         this.errorMessage.set(null);
         this.isChangingStatus.set(member.id);
 
-        const operation = member.active 
+        const operation = member.active
             ? this.memberService.deactivate(member.id)
             : this.memberService.activate(member.id);
 
@@ -61,17 +82,23 @@ export class MemberList implements OnInit {
                 this.isChangingStatus.set(null);
 
                 this.snackBar.open(
-                    member.active 
-                        ? 'Clan je deaktiviran.'
-                        : 'Clan je aktiviran.',
+                    member.active
+                        ? 'Član je deaktiviran.'
+                        : 'Član je aktiviran.',
                     'Zatvori',
-                    { duration: 3000 }
+                    { duration: 3000 },
                 );
                 this.loadMembers();
             },
             error: (error: HttpErrorResponse) => {
                 this.isChangingStatus.set(null);
-                this.errorMessage.set(this.getErrorMessage(error));
+                
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Promena statusa člana nije uspela.',
+                    ),
+                );
             },
         });
     }
@@ -81,20 +108,14 @@ export class MemberList implements OnInit {
 
         this.members$ = this.memberService.getAll().pipe(
             catchError((error: HttpErrorResponse) => {
-                this.errorMessage.set(this.getErrorMessage(error));
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje članova nije uspelo.',
+                    ),
+                );
                 return EMPTY;
             }),
         );
-    }
-
-    private getErrorMessage(error: HttpErrorResponse): string {
-        const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-        return error.status == 401
-            ? 'Sesija nije validna. Prijavte se ponovo.'
-            : error.status === 0
-                ? 'Backend nije dostupan ili CORS nije podesen.'
-                : apiError?.message 
-                ?? `ucitavanje clanova nije uspelo. Status: ${error.status}`;
     }
 }

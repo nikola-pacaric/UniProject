@@ -1,0 +1,9 @@
+p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.confirm-button {
+    background-color: var(--mat-sys-error);
+    color: var(--mat-sys-on-error);
+}

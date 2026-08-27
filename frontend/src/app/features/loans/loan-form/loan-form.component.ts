@@ -10,7 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { Book } from '../../books/book.model';
 import { BookService } from '../../books/book.service';
 import { Member } from '../../members/member.model';
@@ -38,6 +38,7 @@ export class LoanForm implements OnInit {
     private readonly memberService = inject(MemberService);
     private readonly bookService = inject(BookService);
     private readonly router = inject(Router);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
     private readonly snackBar = inject(MatSnackBar);
 
     readonly activeMembers = signal<Member[]>([]);
@@ -69,7 +70,7 @@ export class LoanForm implements OnInit {
         this.loanService.borrow(request).subscribe({
             next: () => {
                 this.snackBar.open(
-                    'Zaduzenje je uspesno evidentirano.',
+                    'Zaduženje je uspešno evidentirano.',
                     'Zatvori',
                     { duration: 3000 },
                 );
@@ -78,9 +79,11 @@ export class LoanForm implements OnInit {
             error: (error: HttpErrorResponse) => {
                 this.isSubmitting.set(false);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
                 this.errorMessage.set(
-                    apiError?.message ?? 'Evidentiranje zaduzenja nije uspelo.',
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Evidentiranje zaduženja nije uspelo.',
+                    ),
                 );
             },
         });
@@ -106,12 +109,14 @@ export class LoanForm implements OnInit {
                 this.isLoading.set(false);
             },
             error: (error: HttpErrorResponse) => {
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
+                this.isLoading.set(false);
 
                 this.errorMessage.set(
-                    apiError?.message ?? 'Ucitavanje podataka za zaduzenje nije uspelo.',
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje opcija za zaduženje nije uspelo.',
+                    ),
                 );
-                this.isLoading.set(false);
             },
         });
     }

@@ -15,7 +15,8 @@ import { CategoryService } from '../../categories/category.service';
 import { Author } from '../../authors/author.model';
 import { Category } from '../../categories/category.model';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
+import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 
 import {
     EMPTY,
@@ -54,6 +55,9 @@ export class BookList implements OnInit {
     private readonly snackBar = inject(MatSnackBar);
     private readonly formBuilder = inject(FormBuilder);
 
+    private readonly confirmationDialog = inject(ConfirmationDialogService);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
+
     books$!: Observable<BookRow[]>;
 
     readonly displayedColumns: string[] = [
@@ -91,32 +95,43 @@ export class BookList implements OnInit {
     }
 
     deleteBook(book: BookRow): void {
-        const confirmed = window.confirm(
-            `Da li zelite da obrisete knjigu "${book.title}"?`,
-        );
+        this.confirmationDialog.confirm({
+            title: 'Brisanje knjige',
+            message: `Da li želite da obrišete knjigu ${book.title}?`,
+            confirmText: 'Obriši',
+        }).subscribe((confirmed) => {
+            if (!confirmed) {
+                return;
+            }
+            this.performDelete(book);
+        });
+    }
 
-        if (!confirmed) {
-            return;
-        }
-
+    private performDelete(book: BookRow): void {
+        this.errorMessage.set(null);
         this.isDeleting.set(book.id);
 
         this.bookService.delete(book.id).subscribe({
             next: () => {
                 this.isDeleting.set(null);
-                this.snackBar.open('Knjiga je uspesno obrisana.', 'Zatvori', { duration: 3000 });
+                this.snackBar.open(
+                    'Knjiga je uspešno obrisana.',
+                    'Zatvori',
+                    { duration: 3000 },
+                );
                 this.loadBooks(this.searchQuery());
             },
             error: (error: HttpErrorResponse) => {
                 this.isDeleting.set(null);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
                 this.errorMessage.set(
-                    apiError?.message ?? 'Brisanje knjige nije uspelo.',
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Brisanje knjige nije uspelo.',
+                    ),
                 );
-            }
-        })
+            },
+        });
     }
 
     private loadBooks(query = ''): void {
@@ -153,18 +168,14 @@ export class BookList implements OnInit {
                 }));
             }),
             catchError((error: HttpErrorResponse) => {
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-                const message = error.status === 401 
-                    ? 'Sesija nije validna. Odjavite se i ponovo prijavite.'
-                    : error.status === 0
-                    ? 'backend nije dostupan ili CORS nije podesen.'
-                    : apiError?.message
-                    ?? `Ucitavanje knjiga nije uspelo. Status: ${error.status}`;
-
-                this.errorMessage.set(message);
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje knjiga nije uspelo.',
+                    ),
+                );
                 return EMPTY;
-            }
-        ));
+            }),
+        );
     }
 }

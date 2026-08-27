@@ -6,7 +6,7 @@ import { forkJoin } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { Loan } from '../../loans/loan.model';
 import { Member } from '../member.model';
 import { MemberService } from '../member.service';
@@ -24,6 +24,7 @@ import { MemberService } from '../member.service';
 export class MemberLoanHistory implements OnInit {
     private readonly memberService = inject(MemberService);
     private readonly route = inject(ActivatedRoute);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
     readonly member = signal<Member | null>(null);
     readonly isLoading = signal(false);
@@ -47,7 +48,7 @@ export class MemberLoanHistory implements OnInit {
         const id = this.memberId;
 
         if (id === null) {
-            this.errorMessage.set('Clan nije pronadjen');
+            this.errorMessage.set('Član nije pronađen.');
             return;
         }
 
@@ -63,12 +64,14 @@ export class MemberLoanHistory implements OnInit {
                 this.isLoading.set(false);
             },
             error: (error: HttpErrorResponse) => {
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-                this.errorMessage.set(
-                    apiError?.message
-                        ?? 'Ucitavanje istorije zaduzenja nije uspelo.',
-                );
                 this.isLoading.set(false);
+
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje istorije zaduženja nije uspelo.',
+                    ),
+                );
             },
         });
     }
@@ -84,11 +87,11 @@ export class MemberLoanHistory implements OnInit {
 
     getStatusLabel(loan: Loan): string {
         if (loan.status === 'RETURNED' || loan.returnDate) {
-            return 'Vraceno';
+            return 'Vraćeno';
         }
 
         if (loan.status === 'OVERDUE') {
-            return 'Isteklo';
+            return 'Zakasnelo';
         }
 
         const today = new Date().toISOString().slice(0, 10);

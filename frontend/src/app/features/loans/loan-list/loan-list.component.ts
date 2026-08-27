@@ -8,8 +8,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { Member } from '../../members/member.model';
 import { MemberService } from '../../members/member.service';
 import { Loan } from '../loan.model';
@@ -36,6 +37,8 @@ export class LoanList implements OnInit {
     private readonly loanService = inject(LoanService);
     private readonly memberService = inject(MemberService);
     private readonly snackBar = inject(MatSnackBar);
+    private readonly confirmationDialog = inject(ConfirmationDialogService);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
     loans$!: Observable<LoanRow[]>;
 
@@ -66,36 +69,15 @@ export class LoanList implements OnInit {
     }
 
     returnLoan(loan: LoanRow): void {
-        const confirmed = window.confirm(
-            `Da li zelite da evidentirate povratak knjige "${loan.bookTitleAtLoan}"?`,
-        );
-
-        if (!confirmed) {
-            return;
-        }
-
-        this.errorMessage.set(null);
-        this.isReturning.set(loan.id);
-
-        this.loanService.returnLoan(loan.id).subscribe({
-            next: () => {
-                this.isReturning.set(null);
-                this.snackBar.open(
-                    'Povratak knjige je evidentiran.',
-                    'Zatvori',
-                    { duration: 3000 },
-                );
-                this.loadLoans(this.showOverdueOnly());
-            },
-            error: (error: HttpErrorResponse) => {
-                this.isReturning.set(null);
-
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-                this.errorMessage.set(
-                    apiError?.message
-                        ?? 'Povratak knjige nije uspeo.',
-                );
-            },
+        this.confirmationDialog.confirm({
+            title: 'Vraćanje knjige',
+            message: `Da li želite da vratite knjigu "${loan.bookTitleAtLoan}"?`,
+            confirmText: 'Evidentiraj vraćanje',
+        }).subscribe((confirmed) => {
+            if (!confirmed) {
+                return;
+            }
+            this.performReturn(loan);
         });
     }
 
@@ -116,7 +98,7 @@ export class LoanList implements OnInit {
 
     getStatusLabel(loan: Loan): string {
         if (this.isReturned(loan)) {
-            return 'Vraceno';
+            return 'Vraćeno';
         }
 
         return this.isOverdue(loan) ? 'Zakasnelo' : 'Aktivno';
@@ -129,6 +111,33 @@ export class LoanList implements OnInit {
 
         const [year, month, day] = value.split('-');
         return `${day}.${month}.${year}.`;
+    }
+
+    private performReturn(loan: LoanRow): void {
+        this.errorMessage.set(null);
+        this.isReturning.set(loan.id);
+
+        this.loanService.returnLoan(loan.id).subscribe({
+            next: () => {
+                this.isReturning.set(null);
+                this.snackBar.open(
+                    'Vraćanje knjige je evidentirano.',
+                    'Zatvori',
+                    { duration: 3000 },
+                );
+                this.loadLoans(this.showOverdueOnly());
+            },
+            error: (error: HttpErrorResponse) => {
+                this.isReturning.set(null);
+
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Vraćanje knjige nije uspelo.',
+                    ),
+                );
+            },
+        });
     }
 
     private loadLoans(overdueOnly = false): void {
@@ -153,24 +162,20 @@ export class LoanList implements OnInit {
                     ...loan,
                     memberName:
                         memberNames.get(loan.memberId) 
-                        ?? `Clan #${loan.memberId}`,
+                        ?? `Član #${loan.memberId}`,
                 }));
             }),
             catchError((error: HttpErrorResponse) => {
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
+                const fallbackMessage = overdueOnly
+                    ? 'Učitavanje zakasnelih zaduženja nije uspelo.'
+                    : 'Učitavanje zaduženja nije uspelo.';
 
-                const fallbackMesage = overdueOnly 
-                    ? `Ucitavanje zakasnelih zaduzenja nije uspelo. Status: ${error.status}`
-                    : `Ucitavanje zaduzenja nije uspelo. Status: ${error.status}`;
-
-                const message = error.status === 401
-                    ? 'Sesija nije validna. Prijavite se ponovo.'
-                    : error.status === 0
-                        ? 'Backend nije dostupan ili CORS nije podesen.'
-                        : apiError?.message
-                            ?? fallbackMesage;
-
-                this.errorMessage.set(message);
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        fallbackMessage,
+                    ),
+                );  
                 return EMPTY;
             }),
         );

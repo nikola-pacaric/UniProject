@@ -2,7 +2,7 @@
     <mat-card class="auth-card" appearance="outlined">
         <mat-card-header>
             <mat-card-title>Registracija bibliotekara</mat-card-title>
-            <mat-card-subtitle> Kreiranje naloga za pristup sistemu</mat-card-subtitle>
+            <mat-card-subtitle>Kreiranje naloga za pristup sistemu</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
@@ -10,27 +10,27 @@
                 <mat-form-field appearance="outline">
                     <mat-label>Ime i prezime</mat-label>
                     <input matInput formControlName="fullName" autocomplete="name"/>
-                    <mat-hint>Opciono</mat-hint>
+                    <mat-hint>Nije obavezno</mat-hint>
 
                     @if (registerForm.controls.fullName.touched && registerForm.controls.fullName.hasError('maxlength')) 
                     {
-                        <mat-error>Dozvoljeno je najvise 150 znakova.</mat-error>
+                        <mat-error>Dozvoljeno je najviše 150 znakova.</mat-error>
                     }
                 </mat-form-field>
 
                 <mat-form-field appearance="outline">
-                    <mat-label>Korisnicko ime</mat-label>
+                    <mat-label>Korisničko ime</mat-label>
                     <input matInput formControlName="username" autocomplete="username"/>
 
                     @if (registerForm.controls.username.touched && registerForm.controls.username.hasError('required')) 
                     {
-                        <mat-error>Korisnicko ime je obavezno.</mat-error>
+                        <mat-error>Korisničko ime je obavezno.</mat-error>
                     } @else if (registerForm.controls.username.touched && registerForm.controls.username.hasError('minlength')) 
                     {
-                        <mat-error>Korisnicko ime mora imati najmanje 3 znaka.</mat-error>
+                        <mat-error>Korisničko ime mora imati najmanje 3 znaka.</mat-error>
                     } @else if (registerForm.controls.username.touched && registerForm.controls.username.hasError('maxlength')) 
                     {
-                        <mat-error>Korisnicko ime moze imati najvise 100 znakova.</mat-error>
+                        <mat-error>Korisničko ime može imati najviše 100 znakova.</mat-error>
                     }
                 </mat-form-field>
 
@@ -43,7 +43,7 @@
                     } @else if (registerForm.controls.email.touched && registerForm.controls.email.hasError('email')) {
                         <mat-error>Unesite ispravnu email adresu.</mat-error>
                     } @else if (registerForm.controls.email.touched && registerForm.controls.email.hasError('maxlength')) {
-                        <mat-error>Dozvoljeno je najvise 150 znakova.</mat-error>
+                        <mat-error>Dozvoljeno je najviše 150 znakova.</mat-error>
                     }
                 </mat-form-field>
 
@@ -56,7 +56,7 @@
                     } @else if (registerForm.controls.password.touched && registerForm.controls.password.hasError('minlength')) {
                         <mat-error>Lozinka mora imati najmanje 6 znakova.</mat-error>
                     } @else if (registerForm.controls.password.touched && registerForm.controls.password.hasError('maxlength')) {
-                        <mat-error>Lozinka moze imati najvise 100 znakova.</mat-error>
+                        <mat-error>Lozinka može imati najviše 100 znakova.</mat-error>
                     }
                 </mat-form-field>
 
@@ -94,7 +94,7 @@
 
         <mat-card-actions class="auth-footer">
             <span>
-                Vec imate nalog.
+                Već imate nalog.
             </span>
             <a mat-button routerLink="/login">
                 Prijavite se

@@ -1,29 +1,29 @@
 <section class="page">
     <header class="page-header">
         <div class="page-heading">
-            <h1 class="page-title">Istorija zaduzenja</h1>
+            <h1 class="page-title">Istorija zaduženja</h1>
 
             <p class="page-description">
                 @if (member(); as currentMember) {
-                    Pregled zaduzenja za
+                    Pregled zaduženja za
                     {{ currentMember.firstName }} {{ currentMember.lastName }}.
-                    Clanska karta: {{ currentMember.membershipCardNumber }}.
+                    Članska karta: {{ currentMember.membershipCardNumber }}.
                 } @else {
-                    Pregled svih prethodnih zaduzenja clana.
+                    Pregled svih prethodnih zaduženja člana.
                 }
             </p>
         </div>
 
         <div class="page-actions">
             <a mat-button routerLink="/members">
-                Nazad na clanove
+                Nazad na članove
             </a>
         </div>
     </header>
 
     <div class="page-content">
         @if (isLoading()) {
-            <p>Ucitavanje istorije zaduzenja...</p>
+            <p>Učitavanje istorije zaduženja...</p>
         } @else {
             @if (errorMessage(); as message) {
                 <div class="server-error" role="alert">
@@ -32,7 +32,7 @@
             }
 
             @if (loans().length === 0) {
-                <p>Clan nema zaduzenja.</p>
+                <p>Član nema zaduženja.</p>
             } @else {
                 <div class="table-container">
                     <table mat-table [dataSource]="loans()">
@@ -47,7 +47,7 @@
 
                         <ng-container matColumnDef="loanDate">
                             <th mat-header-cell *matHeaderCellDef>
-                                Zaduzeno
+                                Zaduženo
                             </th>
                             <td mat-cell *matCellDef="let loan">
                                 {{ formatDate(loan.loanDate) }}
@@ -56,7 +56,7 @@
 
                         <ng-container matColumnDef="dueDate">
                             <th mat-header-cell *matHeaderCellDef>
-                                Rok vracanja
+                                Rok vraćanja
                             </th>
                             <td mat-cell *matCellDef="let loan">
                                 {{ formatDate(loan.dueDate) }}
@@ -65,7 +65,7 @@
 
                         <ng-container matColumnDef="returnDate">
                             <th mat-header-cell *matHeaderCellDef>
-                                Vraceno
+                                Vraćeno
                             </th>
                             <td mat-cell *matCellDef="let loan">
                                 {{ formatDate(loan.returnDate) }}

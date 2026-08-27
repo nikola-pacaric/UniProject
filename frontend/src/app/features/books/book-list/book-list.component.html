@@ -21,10 +21,10 @@
                     placeholder="Naslov, autor, kategorija ili ISBN"/>
             </mat-form-field>
 
-            <button mat-flat-button type="submit">Pretrazi</button>
+            <button mat-flat-button type="submit">Pretraži</button>
 
             <button mat-button type="button"
-                (click)="clearSearch()" [disabled]="!searchQuery()">Ocisti</button>
+                (click)="clearSearch()" [disabled]="!searchQuery()">Očisti</button>
         </form>
 
         @if (errorMessage(); as message) {
@@ -35,7 +35,7 @@
 
         @if (books$ | async; as books) {
             @if (books.length === 0) {
-                <p>Nema pronadjenih knjiga.</p>
+                <p>Nema pronađenih knjiga.</p>
             } @else {
                 <div class="table-container">
                     <table mat-table [dataSource]="books">
@@ -107,7 +107,7 @@
                                     type="button" 
                                     [disabled]="isDeleting() === book.id" 
                                     (click)="deleteBook(book)"
-                                    aria-label="Obrisi knjigu">
+                                    aria-label="Obriši knjigu">
                                     <mat-icon>delete</mat-icon>
                                 </button>
                             </td>

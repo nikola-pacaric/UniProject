@@ -1,18 +1,18 @@
 <main class="auth-page">
     <mat-card class="auth-card" appearance="outlined">
         <mat-card-header>
-            <mat-card-title>Bibliotecki sistem</mat-card-title>
+            <mat-card-title>Bibliotečki sistem</mat-card-title>
             <mat-card-subtitle>Prijavite se kao bibliotekar</mat-card-subtitle>
         </mat-card-header>
 
         <mat-card-content>
             <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="submit()" novalidate>
                 <mat-form-field appearance="outline">
-                    <mat-label>Korisnicko ime</mat-label>
+                    <mat-label>Korisničko ime</mat-label>
                     <input matInput type="text" formControlName="username" autocomplete="username"/>
 
                     @if (loginForm.controls.username.touched && loginForm.controls.username.hasError('required')) {
-                        <mat-error>Korisnicko ime je obavezno</mat-error>
+                        <mat-error>Korisničko ime je obavezno</mat-error>
                     }   
                 </mat-form-field>
 

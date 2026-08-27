@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { CategoryRequest } from '../category.model';
 import { CategoryService } from '../category.service';
 
@@ -32,6 +32,7 @@ export class CategoryForm implements OnInit {
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
     private readonly snackBar = inject(MatSnackBar);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
     readonly isLoading = signal(false);
     readonly isSubmitting = signal(false);
@@ -66,9 +67,15 @@ export class CategoryForm implements OnInit {
                 });
                 this.isLoading.set(false);
             },
-            error: () => {
-                this.errorMessage.set('Ucitavanje kategorije nije uspelo.');
+            error: (error: HttpErrorResponse) => {
                 this.isLoading.set(false);
+
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje kategorije nije uspelo.',
+                    ),
+                );
             },
         });
     }
@@ -98,16 +105,20 @@ export class CategoryForm implements OnInit {
         operation.subscribe({
             next: () => {
                 this.snackBar.open(this.isEditMode 
-                    ? 'Kategorija je uspesno izmenjena.' 
-                    : 'Kategorija je uspesno kreirana.', 'Zatvori', { duration: 3000, }
+                    ? 'Kategorija je uspešno izmenjena.' 
+                    : 'Kategorija je uspešno kreirana.', 'Zatvori', { duration: 3000, }
                 );
                 void this.router.navigate(['/categories']);
             },
             error: (error: HttpErrorResponse) => {
                 this.isSubmitting.set(false);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-                this.errorMessage.set(apiError?.message ?? 'Doslo je do greske prilikom cuvanja kategorije.');
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Čuvanje kategorije nije uspelo.',
+                    ),
+                );
             },
         });
     }

@@ -2,14 +2,15 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
-import { Observable, catchError, of, EMPTY } from 'rxjs';
+import { Observable, catchError, EMPTY } from 'rxjs';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
 import { Author } from '../author.model';
 import { AuthorService } from '../author.service';
 
@@ -29,6 +30,8 @@ import { AuthorService } from '../author.service';
 export class AuthorList implements OnInit {
     private readonly authorService = inject(AuthorService);
     private readonly snackBar = inject(MatSnackBar);
+    private readonly confirmationDialog = inject(ConfirmationDialogService);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
     authors$!: Observable<Author[]>;
 
@@ -46,27 +49,43 @@ export class AuthorList implements OnInit {
     }
 
     deleteAuthor(author: Author): void {
-        const confirmed = window.confirm(`Da li zelite da obrisete autora ${author.firstName} ${author.lastName}?`);
+        this.confirmationDialog.confirm({
+            title: 'Brisanje autora',
+            message: `Da li želite da obrišete autora ${author.firstName} ${author.lastName}?`,
+            confirmText: 'Obriši',
+        }).subscribe((confirmed) => {
+            if (!confirmed) {
+                return;
+            }
 
-        if (!confirmed) {
-            return;
-        }
+            this.performDelete(author);
+        });
+    }
 
+    private performDelete(author: Author): void {
+        this.errorMessage.set(null);
         this.isDeleting.set(author.id);
 
         this.authorService.delete(author.id).subscribe({
             next: () => {
                 this.isDeleting.set(null);
-                this.snackBar.open('Autor je uspesno obrisan.', 'Zatvori', { duration: 3000 });
+                this.snackBar.open(
+                    'Autor je uspešno obrisan.',
+                    'Zatvori',
+                    { duration: 3000 },
+                );
                 this.loadAuthors();
             },
             error: (error: HttpErrorResponse) => {
                 this.isDeleting.set(null);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-                this.errorMessage.set(apiError?.message ?? 'Brisanje autora nije uspelo.');
-            }
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Brisanje autora nije uspelo.',
+                    ),
+                );
+            },
         });
     }
 
@@ -75,14 +94,12 @@ export class AuthorList implements OnInit {
 
         this.authors$ = this.authorService.getAll().pipe(
             catchError((error: HttpErrorResponse) => {
-                const message = error.status === 401 
-                ? 'Sesija nije validna. Odjavite se i prijavite ponovo.' 
-                : error.status === 0 
-                ? 'Backend nije dostupan ili CORS nije podesen.' 
-                : `Ucitavanje autora nije uspelo. Status: ${error.status}`;
-                
-                this.errorMessage.set(message);
-
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje autora nije uspelo.',
+                    )
+                );
                 return EMPTY;
             }),
         );

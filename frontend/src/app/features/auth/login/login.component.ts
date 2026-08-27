@@ -7,7 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { AuthService } from '../../../core/auth/auth.service';
 
 @Component({
@@ -26,8 +26,9 @@ import { AuthService } from '../../../core/auth/auth.service';
 export class Login {
   private readonly authService = inject(AuthService);
   private readonly formBuilder = inject(FormBuilder);
-  private readonly router = inject(Router)
+  private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
   readonly isSubmitting = signal(false);
   readonly errorMessage = signal<string | null>(null);
@@ -56,22 +57,14 @@ export class Login {
       },
       error: (error: HttpErrorResponse) => {
         this.isSubmitting.set(false);
-        this.errorMessage.set(this.getErrorMessage(error));
+        
+        this.errorMessage.set(
+          this.apiErrorMessage.getMessage(
+            error,
+            'Prijava nije uspela.',
+          ),
+        );
       },
     });
-  }
-
-  private getErrorMessage(error: HttpErrorResponse): string {
-    if (error.status === 0) {
-      return 'Backend nije dostupan. Proverite da li je server pokrenut.';
-    }
-
-    if (error.status === 401) {
-      return 'Pogresno korisničko ime ili lozinka.';
-    }
-
-    const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-    return apiError?.message ?? 'Prijava nije uspela.';
   }
 }

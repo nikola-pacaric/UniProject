@@ -3,13 +3,14 @@ import { AsyncPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { Observable, catchError, EMPTY } from 'rxjs';
+import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ApiErrorResponse } from '../../../core/auth/auth.models';
+import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { Category } from '../category.model';
 import { CategoryService } from '../category.service';
 
@@ -29,6 +30,8 @@ import { CategoryService } from '../category.service';
 export class CategoryList implements OnInit {
     private readonly categoryService = inject(CategoryService);
     private readonly snackBar = inject(MatSnackBar);
+    private readonly confirmationDialog = inject(ConfirmationDialogService);
+    private readonly apiErrorMessage = inject(ApiErrorMessageService);
 
     categories$!: Observable<Category[]>;
 
@@ -46,27 +49,42 @@ export class CategoryList implements OnInit {
     }
 
     deleteCategory(category: Category): void {
-        const confirmed = window.confirm(`Da li zelite da obrisete kategoriju ${category.name}?`);
+        this.confirmationDialog.confirm({
+            title: 'Brisanje kategorije',
+            message: `Da li želite da obrišete kategoriju ${category.name}?`,
+            confirmText: 'Obriši',
+        }).subscribe((confirmed) => {
+            if (!confirmed) {
+                return;
+            }
+            this.performDelete(category);
+        });
+    }
 
-        if (!confirmed) {
-            return;
-        }
-
+    private performDelete(category: Category): void {
+        this.errorMessage.set(null);
         this.isDeleting.set(category.id);
 
         this.categoryService.delete(category.id).subscribe({
             next: () => {
                 this.isDeleting.set(null);
-                this.snackBar.open('Kategorija je uspesno obrisana.', 'Zatvori', { duration: 3000 });
+                this.snackBar.open(
+                    'Kategorija je uspešno obrisana.',
+                    'Zatvori',
+                    { duration: 3000 },
+                );
                 this.loadCategories();
             },
             error: (error: HttpErrorResponse) => {
                 this.isDeleting.set(null);
 
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-                this.errorMessage.set(apiError?.message ?? 'Brisanje kategorije nije uspelo.');
-            }
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Brisanje kategorije nije uspelo.',
+                    ),
+                );
+            },
         });
     }
 
@@ -75,17 +93,12 @@ export class CategoryList implements OnInit {
 
         this.categories$ = this.categoryService.getAll().pipe(
             catchError((error: HttpErrorResponse) => {
-                const apiError = error.error as Partial<ApiErrorResponse> | null;
-
-                const message = error.status === 401 
-                ? 'Sesija nije validna. Odjavite se i prijavite ponovo.' 
-                : error.status === 0 
-                ? 'Backend nije dostupan ili CORS nije podesen.' 
-                : apiError?.message ?? 
-                `Ucitavanje kategorija nije uspelo. Status: ${error.status}`;
-                
-                this.errorMessage.set(message);
-
+                this.errorMessage.set(
+                    this.apiErrorMessage.getMessage(
+                        error,
+                        'Učitavanje kategorija nije uspelo.',
+                    ),
+                );
                 return EMPTY;
             }),
         );

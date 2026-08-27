@@ -15,7 +15,7 @@
     <mat-card class="page-content" appearance="outlined">
         <mat-card-content>
             @if (isLoading()) {
-                <p>Ucitavanje kategorije...</p>
+                <p>Učitavanje kategorije...</p>
             } @else {
                 <form [formGroup]="categoryForm" (ngSubmit)="submit()" novalidate>
                     <mat-form-field appearance="outline">
@@ -46,9 +46,9 @@
                     }
 
                     <div class="actions">
-                        <a mat-button routerLink="/categories">Otkazi</a>
+                        <a mat-button routerLink="/categories">Otkaži</a>
                         <button mat-flat-button type="submit" [disabled]="isSubmitting()">
-                            {{ isSubmitting() ? 'Cuvanje...' : 'Sacuvaj' }}
+                            {{ isSubmitting() ? 'Čuvanje...' : 'Sačuvaj' }}
                         </button>
                     </div>
                 </form>
