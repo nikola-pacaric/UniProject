@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { BookService } from '../book.service';
 import { AuthorService } from '../../authors/author.service';
 import { CategoryService } from '../../categories/category.service';
@@ -43,6 +45,7 @@ interface BookRow extends Book {
         MatIconModule,
         MatInputModule,
         MatTableModule,
+        MatTooltipModule,
         MatSnackBarModule
     ],
     templateUrl: './book-list.component.html',

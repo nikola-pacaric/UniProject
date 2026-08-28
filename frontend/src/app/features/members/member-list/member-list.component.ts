@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 
 import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
@@ -22,7 +23,8 @@ import { MemberService } from '../member.service';
         MatButtonModule,
         MatIconModule,
         MatTableModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatTooltipModule,
     ],
     templateUrl: './member-list.component.html',
     styleUrl: './member-list.component.scss',

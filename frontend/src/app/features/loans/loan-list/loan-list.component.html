@@ -112,6 +112,7 @@
                                         mat-icon-button
                                         type="button"
                                         aria-label="Vrati knjigu"
+                                        matTooltip="Vrati knjigu"
                                         (click)="returnLoan(loan)"
                                         [disabled]="isReturning() === loan.id"
                                     >

@@ -76,11 +76,15 @@
                                 Akcije
                             </th>
                             <td mat-cell *matCellDef="let member" class="actions-cell">
-                                <a mat-icon-button [routerLink]="['/members', member.id, 'loans']" aria-label="Istorija zaduženja">
+                                <a mat-icon-button [routerLink]="['/members', member.id, 'loans']" aria-label="Istorija zaduženja"
+                                matTooltip="Istorija zaduženja"
+                                >
                                     <mat-icon>history</mat-icon>
                                 </a>
 
-                                <a mat-icon-button [routerLink]="['/members', member.id, 'edit']" aria-label="Izmeni člana">
+                                <a mat-icon-button [routerLink]="['/members', member.id, 'edit']" aria-label="Izmeni člana"
+                                matTooltip="Izmeni člana"
+                                >
                                     <mat-icon>edit</mat-icon>
                                 </a>
 
@@ -89,8 +93,11 @@
                                     (click)="toggleStatus(member)"
                                     [attr.aria-label]="
                                         member.active ? 'Deaktiviraj člana'
-                                        : 'Aktiviraj člana'
-                                ">
+                                        : 'Aktiviraj člana'"
+                                    [matTooltip]="
+                                        member.active ? 'Deaktiviraj člana'
+                                        : 'Aktiviraj člana'"
+                                >
                                     <mat-icon>
                                         {{ member.active ? 'person_off' : 'person_add'}}
                                     </mat-icon>

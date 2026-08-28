@@ -22,6 +22,27 @@
 
 .shell-sidenav mat-list-item {
     border-radius: 8px;
+    transition:
+        background-color 150ms ease,
+        color 150ms ease;
+}
+
+.shell-sidenav mat-list-item:hover {
+    background: var(--mat-sys-surface-container-high);
+}
+
+.shell-sidenav mat-list-item.active-nav-item {
+    background: var(--mat-sys-secondary-container);
+    color: var(--mat-sys-on-secondary-container);
+}
+
+.shell-sidenav mat-list-item.active-nav-item mat-icon,
+.shell-sidenav mat-list-item.active-nav-item [matListItemTitle] {
+    color: var(--mat-sys-on-secondary-container);
+}
+
+.shell-sidenav mat-list-item.active-nav-item [matListItemTitle] {
+    font-weight: 600;
 }
 
 .brand {
@@ -42,6 +63,10 @@ mat-toolbar {
 }
 
 .toolbar-title {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     margin-left: 12px;
     font-size: 18px;
 }
@@ -60,4 +85,30 @@ mat-toolbar {
     margin-top: 0;
 }
 
+@media (max-width: 900px) {
+    .shell-sidenav {
+        width: min(280px, 85vw);
+    }
+
+    .shell-main {
+        min-height: calc(100dvh - 56px);
+    }
+}
+
+@media (max-width: 600px) {
+    .toolbar-title {
+        margin-left: 4px;
+        font-size: 16px;
+    }
+
+    mat-toolbar button[mat-button] {
+        min-width: 48px;
+        padding-inline: 12px;
+        font-size: 0;
+    }
+
+    mat-toolbar button[mat-button] mat-icon {
+        margin: 0;
+    }
+}
 

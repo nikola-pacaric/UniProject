@@ -64,6 +64,7 @@
                                     mat-icon-button
                                     [routerLink]="['/authors', author.id, 'edit']"
                                     aria-label="Izmeni autora"
+                                    matTooltip="Izmeni autora"
                                 >
                                     <mat-icon>edit</mat-icon>
                                 </a>
@@ -74,6 +75,7 @@
                                     [disabled]="isDeleting() === author.id"
                                     (click)="deleteAuthor(author)"
                                     aria-label="Obriši autora"
+                                    matTooltip="Obriši autora"
                                 >
                                     <mat-icon>delete</mat-icon>
                                 </button>

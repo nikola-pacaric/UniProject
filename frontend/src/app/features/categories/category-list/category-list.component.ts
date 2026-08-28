@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
 import { Category } from '../category.model';
@@ -23,6 +24,7 @@ import { CategoryService } from '../category.service';
         MatButtonModule,
         MatSnackBarModule,
         RouterLink,
+        MatTooltipModule,
     ],
     templateUrl: './category-list.component.html',
     styleUrl: './category-list.component.scss',

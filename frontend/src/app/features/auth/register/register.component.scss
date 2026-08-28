@@ -53,7 +53,15 @@ mat-card-header {
 
 .auth-footer {
     display: flex;
+    flex-wrap: wrap;
+    text-align: center;
     justify-content: center;
     gap: 4px;
     padding: 8px 16px 16px;
+}
+
+@media (max-width: 420px) {
+    .auth-page {
+        padding: 12px;
+    }
 }

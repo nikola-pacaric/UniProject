@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 
 import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
@@ -28,7 +29,8 @@ interface LoanRow extends Loan {
         MatTableModule,
         MatIconModule,
         MatSnackBarModule,
-        AsyncPipe
+        AsyncPipe,
+        MatTooltipModule,
     ],
     templateUrl: './loan-list.component.html',
     styleUrl: './loan-list.component.scss',

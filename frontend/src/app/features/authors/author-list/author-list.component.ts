@@ -10,6 +10,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ConfirmationDialogService } from '../../../shared/confirmation-dialog/confirmation-dialog.service';
 import { ApiErrorMessageService } from '../../../core/http/api-error-message.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { Author } from '../author.model';
 import { AuthorService } from '../author.service';
@@ -23,6 +24,7 @@ import { AuthorService } from '../author.service';
         MatButtonModule,
         MatSnackBarModule,
         RouterLink,
+        MatTooltipModule,
     ],
     templateUrl: './author-list.component.html',
     styleUrl: './author-list.component.scss',

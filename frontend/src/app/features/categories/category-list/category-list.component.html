@@ -63,6 +63,7 @@
                                 mat-icon-button
                                 [routerLink]="['/categories', category.id, 'edit']"
                                 aria-label="Izmeni kategoriju"
+                                matTooltip="Izmeni kategoriju"
                                 >
                                 <mat-icon>edit</mat-icon>
                                 </a>
@@ -73,6 +74,7 @@
                                 [disabled]="isDeleting() === category.id"
                                 (click)="deleteCategory(category)"
                                 aria-label="Obriši kategoriju"
+                                matTooltip="Obriši kategoriju"
                                 >
                                 <mat-icon>delete</mat-icon>
                                 </button>
