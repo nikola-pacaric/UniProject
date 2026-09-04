@@ -1,4 +1,49 @@
 <resources>
     <string name="app_name">UniProject</string>
     <string name="login_title">Prijava bibliotekara</string>
+    <string name="login_subtitle">Prijavite se da biste upravljali bibliotekom.</string>
+    <string name="login_username_label">Korisničko ime</string>
+    <string name="login_password_label">Lozinka</string>
+    <string name="login_action">Prijavi se</string>
+    <string name="login_loading">Prijava je u toku</string>
+    <string name="login_username_required">Unesite korisničko ime.</string>
+    <string name="login_password_required">Unesite lozinku.</string>
+    <string name="login_success">Uspešno ste se prijavili kao %1$s.</string>
+    <string name="login_no_account">Nemate nalog?</string>
+    <string name="login_open_registration">Registrujte se</string>
+    <string name="logout_action">Odjavi se</string>
+    <string name="logout_success">Uspešno ste se odjavili.</string>
+    <string name="session_expired">Sesija je istekla. Prijavite se ponovo.</string>
+
+    <string name="register_title">Registracija bibliotekara</string>
+    <string name="register_subtitle">Napravite nalog za pristup bibliotečkom sistemu.</string>
+    <string name="register_username_label">Korisničko ime</string>
+    <string name="register_email_label">Email adresa</string>
+    <string name="register_full_name_label">Ime i prezime (opciono)</string>
+    <string name="register_password_label">Lozinka</string>
+    <string name="register_action">Registruj se</string>
+    <string name="register_loading">Registracija je u toku</string>
+    <string name="register_username_required">Unesite korisničko ime.</string>
+    <string name="register_username_length">Korisničko ime mora imati od 3 do 100 znakova.</string>
+    <string name="register_email_required">Unesite email adresu.</string>
+    <string name="register_email_invalid">Unesite ispravnu email adresu.</string>
+    <string name="register_email_length">Email adresa može imati najviše 150 znakova.</string>
+    <string name="register_password_required">Unesite lozinku.</string>
+    <string name="register_password_length">Lozinka mora imati od 6 do 100 znakova.</string>
+    <string name="register_full_name_length">Ime i prezime mogu imati najviše 150 znakova.</string>
+    <string name="register_success">Registracija je uspešna. Sada se prijavite.</string>
+    <string name="register_has_account">Već imate nalog?</string>
+    <string name="register_back_to_login">Vratite se na prijavu</string>
+
+    <string name="authors_title">Autori</string>
+    <string name="authors_welcome">Dobro došli, %1$s.</string>
+    <string name="authors_description">Pregled i upravljanje autorima biblioteke.</string>
+    <string name="categories_title">Kategorije</string>
+    <string name="categories_description">Pregled i upravljanje kategorijama knjiga.</string>
+    <string name="books_title">Knjige</string>
+    <string name="books_description">Pregled, pretraga i upravljanje bibliotečkim fondom.</string>
+    <string name="members_title">Članovi</string>
+    <string name="members_description">Pregled i upravljanje članovima biblioteke.</string>
+    <string name="loans_title">Zaduženja</string>
+    <string name="loans_description">Pregled zaduženja, izdavanje i vraćanje knjiga.</string>
 </resources>

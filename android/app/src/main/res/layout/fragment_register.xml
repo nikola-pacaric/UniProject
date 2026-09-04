@@ -8,15 +8,15 @@
     android:fillViewport="true"
     android:paddingHorizontal="24dp"
     android:paddingVertical="32dp"
-    tools:context=".ui.auth.login.LoginFragment">
+    tools:context=".ui.auth.register.RegisterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="520dp">
+        android:minHeight="720dp">
 
         <TextView
-            android:id="@+id/appNameText"
+            android:id="@+id/registerAppNameText"
             style="@style/TextAppearance.Material3.LabelLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,76 +26,132 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/loginTitleText"
+            android:id="@+id/registerTitleText"
             style="@style/TextAppearance.Material3.HeadlineLarge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/login_title"
+            android:text="@string/register_title"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appNameText" />
+            app:layout_constraintTop_toBottomOf="@id/registerAppNameText" />
 
         <TextView
-            android:id="@+id/loginSubtitleText"
+            android:id="@+id/registerSubtitleText"
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/login_subtitle"
+            android:text="@string/register_subtitle"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginTitleText" />
+            app:layout_constraintTop_toBottomOf="@id/registerTitleText" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/usernameInputLayout"
+            android:id="@+id/registerUsernameInputLayout"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:hint="@string/login_username_label"
+            android:layout_marginTop="28dp"
+            android:hint="@string/register_username_label"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginSubtitleText">
+            app:layout_constraintTop_toBottomOf="@id/registerSubtitleText">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/usernameInput"
+                android:id="@+id/registerUsernameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="username"
+                android:autofillHints="newUsername"
                 android:imeOptions="actionNext"
                 android:inputType="text"
+                android:maxLength="100"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/passwordInputLayout"
+            android:id="@+id/registerEmailInputLayout"
             style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="@string/login_password_label"
+            android:layout_marginTop="12dp"
+            android:hint="@string/register_email_label"
+            app:counterEnabled="true"
+            app:counterMaxLength="150"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registerUsernameInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerEmailInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="emailAddress"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
+                android:maxLength="150"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/registerFullNameInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/register_full_name_label"
+            app:counterEnabled="true"
+            app:counterMaxLength="150"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registerEmailInputLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registerFullNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="personName"
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName"
+                android:maxLength="150"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/registerPasswordInputLayout"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/register_password_label"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
             app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/usernameInputLayout">
+            app:layout_constraintTop_toBottomOf="@id/registerFullNameInputLayout">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordInput"
+                android:id="@+id/registerPasswordInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="password"
+                android:autofillHints="newPassword"
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
+                android:maxLength="100"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
-            android:id="@+id/loginErrorText"
+            android:id="@+id/registerErrorText"
             style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,57 +161,59 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/passwordInputLayout"
-            tools:text="Pogrešno korisničko ime ili lozinka."
+            app:layout_constraintTop_toBottomOf="@id/registerPasswordInputLayout"
+            tools:text="Korisničko ime je već zauzeto."
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/loginButton"
+            android:id="@+id/registerButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:minHeight="52dp"
-            android:text="@string/login_action"
+            android:text="@string/register_action"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginErrorText" />
+            app:layout_constraintTop_toBottomOf="@id/registerErrorText" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/loginProgress"
+            android:id="@+id/registerProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:contentDescription="@string/login_loading"
+            android:contentDescription="@string/register_loading"
             android:visibility="gone"
             app:indicatorSize="28dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginButton"
+            app:layout_constraintTop_toBottomOf="@id/registerButton"
             tools:visibility="visible" />
 
         <LinearLayout
-            android:id="@+id/registerPromptContainer"
+            android:id="@+id/loginPromptContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/loginProgress">
+            app:layout_constraintTop_toBottomOf="@id/registerProgress"
+            app:layout_constraintVertical_bias="0">
 
             <TextView
                 style="@style/TextAppearance.Material3.BodyMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_no_account" />
+                android:text="@string/register_has_account" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/openRegistrationButton"
+                android:id="@+id/backToLoginButton"
                 style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_open_registration" />
+                android:text="@string/register_back_to_login" />
 
         </LinearLayout>
 

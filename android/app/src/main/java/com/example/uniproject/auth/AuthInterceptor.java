@@ -36,7 +36,12 @@ public final class AuthInterceptor implements Interceptor {
                 .header("Authorization", "Bearer " + token)
                 .build();
 
-        return chain.proceed(authenticatedRequest);
+        Response response = chain.proceed(authenticatedRequest);
+        if (response.code() == 401 && sessionManager.clearSessionIfPresent()) {
+            SessionExpirationNotifier.notifySessionExpired();
+        }
+
+        return response;
     }
 
     private boolean isPublicAuthRequest(Request request) {

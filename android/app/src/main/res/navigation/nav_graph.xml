@@ -9,6 +9,47 @@
         android:id="@+id/loginFragment"
         android:name="com.example.uniproject.ui.auth.login.LoginFragment"
         android:label="@string/login_title"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login">
+
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.uniproject.ui.auth.register.RegisterFragment"
+        android:label="@string/register_title"
+        tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/authorsFragment"
+        android:name="com.example.uniproject.ui.authors.AuthorsFragment"
+        android:label="@string/authors_title"
+        tools:layout="@layout/fragment_authors" />
+
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.example.uniproject.ui.categories.CategoriesFragment"
+        android:label="@string/categories_title"
+        tools:layout="@layout/fragment_feature_placeholder" />
+
+    <fragment
+        android:id="@+id/booksFragment"
+        android:name="com.example.uniproject.ui.books.BooksFragment"
+        android:label="@string/books_title"
+        tools:layout="@layout/fragment_feature_placeholder" />
+
+    <fragment
+        android:id="@+id/membersFragment"
+        android:name="com.example.uniproject.ui.members.MembersFragment"
+        android:label="@string/members_title"
+        tools:layout="@layout/fragment_feature_placeholder" />
+
+    <fragment
+        android:id="@+id/loansFragment"
+        android:name="com.example.uniproject.ui.loans.LoansFragment"
+        android:label="@string/loans_title"
+        tools:layout="@layout/fragment_feature_placeholder" />
 
 </navigation>

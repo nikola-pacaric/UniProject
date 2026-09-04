@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/authorsFragment"
+        android:icon="@drawable/ic_author"
+        android:title="@string/authors_title" />
+
+    <item
+        android:id="@+id/categoriesFragment"
+        android:icon="@drawable/ic_category"
+        android:title="@string/categories_title" />
+
+    <item
+        android:id="@+id/booksFragment"
+        android:icon="@drawable/ic_book"
+        android:title="@string/books_title" />
+
+    <item
+        android:id="@+id/membersFragment"
+        android:icon="@drawable/ic_members"
+        android:title="@string/members_title" />
+
+    <item
+        android:id="@+id/loansFragment"
+        android:icon="@drawable/ic_loan"
+        android:title="@string/loans_title" />
+
+</menu>

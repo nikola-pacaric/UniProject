@@ -46,4 +46,15 @@ public class SessionManager {
     public void clearSession() {
         preferences.edit().clear().apply();
     }
+
+    public boolean clearSessionIfPresent() {
+        synchronized (SessionManager.class) {
+            if (!hasSession()) {
+                return false;
+            }
+
+            clearSession();
+            return true;
+        }
+    }
 }
