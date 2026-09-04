@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UniProject</string>
+    <string name="login_title">Prijava bibliotekara</string>
 </resources>
