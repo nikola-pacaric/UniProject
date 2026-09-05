@@ -18,9 +18,7 @@ public final class LoansFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView title = view.findViewById(R.id.featureTitleText);
         TextView description = view.findViewById(R.id.featureDescriptionText);
-        title.setText(R.string.loans_title);
         description.setText(R.string.loans_description);
     }
 }

@@ -8,26 +8,17 @@
     android:paddingVertical="32dp">
 
     <TextView
-        android:id="@+id/featureTitleText"
-        style="@style/TextAppearance.Material3.HeadlineLarge"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Kategorije" />
-
-    <TextView
         android:id="@+id/featureDescriptionText"
         style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textAlignment="center"
         android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/featureTitleText"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Pregled i upravljanje podacima biblioteke." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
