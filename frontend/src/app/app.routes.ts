@@ -33,7 +33,7 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                redirectTo: 'authors',
+                redirectTo: 'loans',
                 pathMatch: 'full',
             },
             {

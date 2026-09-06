@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uniproject.R;
-import com.example.uniproject.auth.SessionManager;
 import com.example.uniproject.data.http.ApiErrorResponse;
 import com.example.uniproject.data.model.author.AuthorResponse;
 import com.google.android.material.button.MaterialButton;
@@ -33,10 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class AuthorsFragment extends Fragment {
-    public static final String ARG_SHOW_LOGIN_SUCCESS = "showLoginSuccess";
     private static final int AUTHOR_NAME_MAX_LENGTH = 100;
 
-    private boolean loginConfirmationShown;
     private AuthorsViewModel viewModel;
     private AuthorAdapter adapter;
     private RecyclerView authorsRecyclerView;
@@ -71,26 +68,6 @@ public final class AuthorsFragment extends Fragment {
         observeViewModel();
         authorsRetryButton.setOnClickListener(ignored -> viewModel.loadAuthors());
         addAuthorButton.setOnClickListener(ignored -> showCreateAuthorDialog());
-
-        SessionManager sessionManager = new SessionManager(requireContext());
-        String displayName = sessionManager.getFullName();
-        if (TextUtils.isEmpty(displayName)) {
-            displayName = sessionManager.getUsername();
-        }
-
-        Bundle arguments = getArguments();
-        boolean shouldShowLoginSuccess = arguments != null
-                && arguments.getBoolean(ARG_SHOW_LOGIN_SUCCESS, false);
-        if (!TextUtils.isEmpty(displayName)
-                && shouldShowLoginSuccess
-                && !loginConfirmationShown) {
-            loginConfirmationShown = true;
-            Snackbar.make(
-                    view,
-                    getString(R.string.login_success, displayName),
-                    Snackbar.LENGTH_LONG
-            ).show();
-        }
 
         if (viewModel.getAuthors().getValue() == null
                 && viewModel.getLoadError().getValue() == null) {

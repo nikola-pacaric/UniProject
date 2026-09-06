@@ -6,6 +6,33 @@
         </div>
 
         <mat-nav-list>
+            <mat-list-item routerLink="/loans"
+                routerLinkActive="active-nav-item"
+                ariaCurrentWhenActive="page"
+                (click)="closeNavigationOnNarrowScreen(sidenav)"
+            >
+                <mat-icon matListItemIcon>assignment</mat-icon>
+                <span matListItemTitle>Zaduženja</span>
+            </mat-list-item>
+
+            <mat-list-item routerLink="/members"
+                routerLinkActive="active-nav-item"
+                ariaCurrentWhenActive="page"
+                (click)="closeNavigationOnNarrowScreen(sidenav)"
+            >
+                <mat-icon matListItemIcon>groups</mat-icon>
+                <span matListItemTitle>Članovi</span>
+            </mat-list-item>
+
+            <mat-list-item routerLink="/books"
+                routerLinkActive="active-nav-item"
+                ariaCurrentWhenActive="page"
+                (click)="closeNavigationOnNarrowScreen(sidenav)"
+            >
+                <mat-icon matListItemIcon>menu_book</mat-icon>
+                <span matListItemTitle>Knjige</span>
+            </mat-list-item>
+
             <mat-list-item routerLink="/authors"
                 routerLinkActive="active-nav-item"
                 ariaCurrentWhenActive="page"
@@ -22,33 +49,6 @@
             >
                 <mat-icon matListItemIcon>category</mat-icon>
                 <span matListItemTitle>Kategorije</span>
-            </mat-list-item>
-
-            <mat-list-item routerLink="/books"
-                routerLinkActive="active-nav-item"
-                ariaCurrentWhenActive="page"
-                (click)="closeNavigationOnNarrowScreen(sidenav)"
-            >
-                <mat-icon matListItemIcon>menu_book</mat-icon>
-                <span matListItemTitle>Knjige</span>
-            </mat-list-item>
-
-            <mat-list-item routerLink="/members"
-                routerLinkActive="active-nav-item"
-                ariaCurrentWhenActive="page"
-                (click)="closeNavigationOnNarrowScreen(sidenav)"
-            >
-                <mat-icon matListItemIcon>groups</mat-icon>
-                <span matListItemTitle>Članovi</span>
-            </mat-list-item>
-
-            <mat-list-item routerLink="/loans"
-                routerLinkActive="active-nav-item"
-                ariaCurrentWhenActive="page"
-                (click)="closeNavigationOnNarrowScreen(sidenav)"
-            >
-                <mat-icon matListItemIcon>assignment</mat-icon>
-                <span matListItemTitle>Zaduženja</span>
             </mat-list-item>
         </mat-nav-list>
     </mat-sidenav>

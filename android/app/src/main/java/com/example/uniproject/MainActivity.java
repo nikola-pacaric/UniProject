@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 .setLaunchSingleTop(true)
                 .build();
 
-        navController.navigate(R.id.authorsFragment, null, navOptions);
+        navController.navigate(R.id.loansFragment, null, navOptions);
     }
 
     private void openLoginAfterSessionExpiration() {

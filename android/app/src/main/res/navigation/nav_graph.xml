@@ -66,6 +66,6 @@
         android:id="@+id/loansFragment"
         android:name="com.example.uniproject.ui.loans.LoansFragment"
         android:label="@string/loans_title"
-        tools:layout="@layout/fragment_feature_placeholder" />
+        tools:layout="@layout/fragment_loans" />
 
 </navigation>

@@ -20,7 +20,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.uniproject.R;
 import com.example.uniproject.data.http.ApiErrorResponse;
-import com.example.uniproject.ui.authors.AuthorsFragment;
+import com.example.uniproject.ui.loans.LoansFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -200,10 +200,10 @@ public class LoginFragment extends Fragment {
                 .build();
 
         Bundle arguments = new Bundle();
-        arguments.putBoolean(AuthorsFragment.ARG_SHOW_LOGIN_SUCCESS, true);
+        arguments.putBoolean(LoansFragment.ARG_SHOW_LOGIN_SUCCESS, true);
 
         NavHostFragment.findNavController(this)
-                .navigate(R.id.authorsFragment, arguments, navOptions);
+                .navigate(R.id.loansFragment, arguments, navOptions);
     }
 
     private void clearErrors() {
