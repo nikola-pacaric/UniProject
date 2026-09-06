@@ -44,7 +44,23 @@
         android:id="@+id/membersFragment"
         android:name="com.example.uniproject.ui.members.MembersFragment"
         android:label="@string/members_title"
-        tools:layout="@layout/fragment_feature_placeholder" />
+        tools:layout="@layout/fragment_members">
+
+        <action
+            android:id="@+id/action_membersFragment_to_memberLoanHistoryFragment"
+            app:destination="@id/memberLoanHistoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/memberLoanHistoryFragment"
+        android:name="com.example.uniproject.ui.members.MemberLoanHistoryFragment"
+        android:label="@string/member_history_title"
+        tools:layout="@layout/fragment_member_loan_history">
+
+        <argument
+            android:name="memberId"
+            app:argType="long" />
+    </fragment>
 
     <fragment
         android:id="@+id/loansFragment"
