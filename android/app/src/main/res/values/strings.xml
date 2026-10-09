@@ -10,7 +10,7 @@
     <string name="login_password_required">Unesite lozinku.</string>
     <string name="login_success">Uspešno ste se prijavili kao %1$s.</string>
     <string name="login_no_account">Nemate nalog?</string>
-    <string name="login_open_registration">Registrujte se</string>
+    <string name="login_open_registration">Registruj se</string>
     <string name="logout_action">Odjavi se</string>
     <string name="logout_success">Uspešno ste se odjavili.</string>
     <string name="session_expired">Sesija je istekla. Prijavite se ponovo.</string>
@@ -24,16 +24,16 @@
     <string name="register_action">Registruj se</string>
     <string name="register_loading">Registracija je u toku</string>
     <string name="register_username_required">Unesite korisničko ime.</string>
-    <string name="register_username_length">Korisničko ime mora imati od 3 do 100 znakova.</string>
+    <string name="register_username_length">Korisničko ime mora imati od 3 do 100 karaktera.</string>
     <string name="register_email_required">Unesite email adresu.</string>
     <string name="register_email_invalid">Unesite ispravnu email adresu.</string>
-    <string name="register_email_length">Email adresa može imati najviše 150 znakova.</string>
+    <string name="register_email_length">Email adresa može imati najviše 150 karaktera.</string>
     <string name="register_password_required">Unesite lozinku.</string>
-    <string name="register_password_length">Lozinka mora imati od 6 do 100 znakova.</string>
-    <string name="register_full_name_length">Ime i prezime mogu imati najviše 150 znakova.</string>
+    <string name="register_password_length">Lozinka mora imati od 6 do 100 karaktera.</string>
+    <string name="register_full_name_length">Ime i prezime mogu imati najviše 150 karaktera.</string>
     <string name="register_success">Registracija je uspešna. Sada se prijavite.</string>
     <string name="register_has_account">Već imate nalog?</string>
-    <string name="register_back_to_login">Vratite se na prijavu</string>
+    <string name="register_back_to_login">Vrati se na prijavu</string>
 
     <string name="authors_title">Autori</string>
     <string name="authors_loading">Učitavanje autora</string>
@@ -47,7 +47,7 @@
     <string name="author_biography_label">Biografija (opciono)</string>
     <string name="author_first_name_required">Unesite ime autora.</string>
     <string name="author_last_name_required">Unesite prezime autora.</string>
-    <string name="author_name_length">Ime i prezime mogu imati najviše 100 znakova.</string>
+    <string name="author_name_length">Ime i prezime mogu imati najviše 100 karaktera.</string>
     <string name="author_create_action">Sačuvaj</string>
     <string name="author_create_loading">Čuvanje autora je u toku</string>
     <string name="author_create_success">Autor %1$s je dodat.</string>
@@ -75,7 +75,7 @@
     <string name="category_name_label">Naziv</string>
     <string name="category_description_label">Opis (opciono)</string>
     <string name="category_name_required">Unesite naziv kategorije.</string>
-    <string name="category_name_length">Naziv kategorije može imati najviše 100 znakova.</string>
+    <string name="category_name_length">Naziv kategorije može imati najviše 100 karaktera.</string>
     <string name="category_name_duplicate">Kategorija sa ovim nazivom već postoji.</string>
     <string name="category_create_action">Sačuvaj</string>
     <string name="category_create_loading">Čuvanje kategorije je u toku</string>
@@ -121,9 +121,9 @@
     <string name="book_author_label">Autor</string>
     <string name="book_category_label">Kategorija</string>
     <string name="book_title_required">Unesite naslov knjige.</string>
-    <string name="book_title_length">Naslov može imati najviše 255 znakova.</string>
+    <string name="book_title_length">Naslov može imati najviše 255 karaktera.</string>
     <string name="book_isbn_required">Unesite ISBN knjige.</string>
-    <string name="book_isbn_length">ISBN može imati najviše 20 znakova.</string>
+    <string name="book_isbn_length">ISBN može imati najviše 20 karaktera.</string>
     <string name="book_isbn_duplicate">Knjiga sa ovim ISBN brojem već postoji.</string>
     <string name="book_publication_year_required">Unesite godinu izdanja.</string>
     <string name="book_publication_year_invalid">Unesite ispravnu godinu izdanja.</string>
@@ -157,14 +157,14 @@
     <string name="member_phone_label">Telefon (opciono)</string>
     <string name="member_first_name_required">Unesite ime člana.</string>
     <string name="member_last_name_required">Unesite prezime člana.</string>
-    <string name="member_name_length">Ime i prezime mogu imati najviše 100 znakova.</string>
+    <string name="member_name_length">Ime i prezime mogu imati najviše 100 karaktera.</string>
     <string name="member_card_number_required">Unesite broj članske karte.</string>
-    <string name="member_card_number_length">Broj članske karte može imati najviše 50 znakova.</string>
+    <string name="member_card_number_length">Broj članske karte može imati najviše 50 karaktera.</string>
     <string name="member_card_number_duplicate">Član sa ovim brojem članske karte već postoji.</string>
     <string name="member_email_required">Unesite email adresu člana.</string>
     <string name="member_email_invalid">Unesite ispravnu email adresu.</string>
-    <string name="member_email_length">Email adresa može imati najviše 150 znakova.</string>
-    <string name="member_phone_length">Telefon može imati najviše 50 znakova.</string>
+    <string name="member_email_length">Email adresa može imati najviše 150 karaktera.</string>
+    <string name="member_phone_length">Telefon može imati najviše 50 karaktera.</string>
     <string name="member_save_action">Sačuvaj</string>
     <string name="member_save_loading">Čuvanje člana je u toku</string>
     <string name="member_create_success">Član %1$s je dodat.</string>
@@ -203,7 +203,7 @@
     <string name="deactivate_member_action">Deaktiviraj člana</string>
     <string name="deactivate_member_content_description">Deaktiviraj člana %1$s</string>
     <string name="deactivate_member_title">Deaktivacija člana</string>
-    <string name="deactivate_member_confirmation">Da li želite da deaktivirate člana %1$s?</string>
+    <string name="deactivate_member_confirmation">Da li sigurno želite da deaktivirate člana %1$s?</string>
     <string name="member_activate_success">Član je aktiviran.</string>
     <string name="member_deactivate_success">Član je deaktiviran.</string>
     <string name="member_status_change_failed">Promena statusa člana nije uspela.</string>
@@ -243,10 +243,10 @@
     <string name="loan_status_returned">Vraćeno</string>
     <string name="loan_status_overdue">Zakasnelo</string>
     <string name="return_loan_action">Vrati knjigu</string>
-    <string name="return_loan_loading">Vraćanje…</string>
+    <string name="return_loan_loading">Vraćanje knjige je u toku…</string>
     <string name="return_loan_content_description">Vrati knjigu %1$s</string>
     <string name="return_loan_title">Vraćanje knjige</string>
-    <string name="return_loan_confirmation">Da li želite da evidentirate vraćanje knjige %1$s?</string>
+    <string name="return_loan_confirmation">Da li sigurno želite da evidentirate vraćanje knjige %1$s?</string>
     <string name="loan_return_success">Knjiga %1$s je vraćena.</string>
     <string name="loan_return_failed">Vraćanje knjige trenutno nije moguće.</string>
 </resources>
